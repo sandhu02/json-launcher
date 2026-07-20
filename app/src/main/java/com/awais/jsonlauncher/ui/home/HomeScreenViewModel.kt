@@ -1,10 +1,9 @@
-package com.awais.jsonlauncher.viewmodels
+package com.awais.jsonlauncher.ui.home
 
 import android.app.Application
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.awais.jsonlauncher.models.AppInfo
 import com.awais.jsonlauncher.repositories.AppsRepository

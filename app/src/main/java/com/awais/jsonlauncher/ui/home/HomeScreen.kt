@@ -1,4 +1,4 @@
-package com.awais.jsonlauncher.screens
+package com.awais.jsonlauncher.ui.home
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -15,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.awais.jsonlauncher.models.AppInfo
-import com.awais.jsonlauncher.viewmodels.HomeScreenViewModel
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.foundation.clickable

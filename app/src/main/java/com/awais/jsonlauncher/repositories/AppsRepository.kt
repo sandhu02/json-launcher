@@ -29,7 +29,7 @@ class AppsRepository @Inject constructor(
                 AppInfo(
                     name = it.label.toString(),
                     packageName = it.applicationInfo.packageName,
-                    icon = it.getIcon(0)
+//                    icon = it.getIcon(0)
                 )
             }
 

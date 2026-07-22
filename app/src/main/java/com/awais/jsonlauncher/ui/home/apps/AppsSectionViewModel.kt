@@ -20,7 +20,7 @@ data class AppsSectionUiState(
     val isAppCollapsed: List<Boolean> = emptyList(),
     val apps: List<AppInfo> = emptyList(),
     val pinnedApps: List<AppInfo> = emptyList(),
-    val isLoading: Boolean = true
+    val isLoading: Boolean = false
 )
 
 @HiltViewModel
@@ -35,18 +35,26 @@ class AppsSectionViewModel @Inject constructor(
         _uiState.update { it.copy(isCollapsed = !uiState.value.isCollapsed) }
     }
 
-//    fun onCollapseAppClicked (index: Int) {
-//        _uiState.update { it.copy(isAppCollapsed = uiState.value.isAppCollapsed[index]) }
-//    }
+    fun onCollapseClick(packageName: String) {
+        _uiState.update { state ->
+            state.copy(
+                pinnedApps = state.pinnedApps.map { app ->
+                    if (app.packageName == packageName)
+                        app.copy(isCollapsed = !app.isCollapsed)
+                    else
+                        app
+                }
+            )
+        }
+    }
 
 
     private fun loadApps() {
 
         viewModelScope.launch(Dispatchers.IO) {
+            _uiState.update { it.copy(isLoading = true) }
 
             val apps = repository.getInstalledApps()
-
-            Log.d("InstalledApp" , apps.toString())
 
             val pinned = pinnedPackages.mapNotNull { packageName ->
                 apps.find { it.packageName == packageName }

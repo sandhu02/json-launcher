@@ -8,11 +8,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.text.style.TextDecoration
 import com.awais.jsonlauncher.models.JsonProperty
 import com.awais.jsonlauncher.ui.theme.JsonSpacing
 import com.awais.jsonlauncher.ui.theme.JsonSyntax
@@ -22,19 +19,19 @@ fun JsonItem(
     name:String,
     properties: List<JsonProperty>,
     isCollapsed: Boolean,
-    onCollapseClicked : () -> Unit,
+    onCollapseClick : () -> Unit,
     onClick : () -> Unit,
 ) {
 
     Column(
         modifier = Modifier
             .padding(start = JsonSpacing.Indent)
-            .clickable{ onClick() }
+            .clickable { onClick() }
     ) {
         Row() {
             Text(if (isCollapsed) ">" else "˅" ,
                 modifier = Modifier.clickable {
-                    onCollapseClicked()
+                    onCollapseClick()
                 }
             )
 
@@ -63,7 +60,25 @@ fun JsonItem(
 
                     Spacer(modifier = Modifier.width(JsonSpacing.SM))
 
-                    Text("\"${it.value}\"", color = JsonSyntax.string)
+                    when(it.valueType) {
+                        "STRING" -> Text(
+                            "\"${it.value}\"", color = JsonSyntax.string,
+                            modifier = Modifier.clickable{ it.onValueClick() }
+                        )
+                        "INTEGER" -> Text(
+                            it.value , color = JsonSyntax.number,
+                            modifier = Modifier.clickable{ it.onValueClick() }
+                        )
+                        "BOOLEAN" -> Text(
+                            it.value , color = JsonSyntax.boolean , textDecoration = TextDecoration.Underline,
+                            modifier = Modifier.clickable{ it.onValueClick() }
+                        )
+                        "COMMENT" -> Text(
+                            it.value , color = JsonSyntax.comment , textDecoration = TextDecoration.Underline,
+                            modifier = Modifier.clickable{ it.onValueClick() }
+                        )
+                    }
+
                     Text(",")
                 }
             }

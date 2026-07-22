@@ -1,20 +1,43 @@
 package com.awais.jsonlauncher.ui.home.notification
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.awais.jsonlauncher.models.NotificationInfo
+import com.awais.jsonlauncher.repositories.NotificationRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 data class NotificationsSectionUiState(
+    val notifications: List<NotificationInfo> = emptyList(),
     val isCollapsed: Boolean = false
 )
 
-class NotificationsSectionViewModel() : ViewModel() {
+@HiltViewModel
+class NotificationsSectionViewModel @Inject constructor(
+    private val repository: NotificationRepository,
+) : ViewModel() {
     private val _uiState = MutableStateFlow(NotificationsSectionUiState())
     val uiState = _uiState.asStateFlow()
 
+    fun updateNotifications() {
+        viewModelScope.launch {
+            repository.notifications.collect { notifications ->
+                Log.d("notification" , notifications.toString())
+                _uiState.update { it.copy(notifications = notifications) }
+            }
+        }
+    }
+
     fun onCollapseClick() {
-//        Log.d("Json Item" , "${uiState.value.isCollapsed}")
         _uiState.update { it.copy(isCollapsed = !uiState.value.isCollapsed) }
+    }
+
+    init {
+        updateNotifications()
     }
 }

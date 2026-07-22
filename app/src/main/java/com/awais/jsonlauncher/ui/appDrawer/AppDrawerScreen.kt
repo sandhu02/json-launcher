@@ -4,20 +4,18 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.awais.jsonlauncher.models.JsonProperty
-import com.awais.jsonlauncher.ui.home.apps.AppsSectionViewModel
 import com.awais.jsonlauncher.ui.jsonObject.JsonItem
 import com.awais.jsonlauncher.ui.theme.JsonSpacing
 import com.awais.jsonlauncher.ui.theme.JsonSyntax
@@ -36,47 +34,55 @@ fun AppDrawerScreen(
             onQueryChange = {}
         )
 
-        Column(
-            modifier = Modifier
-            .verticalScroll(rememberScrollState())
+        LazyColumn(
+            modifier = Modifier.weight(1f)
         ) {
-            Row() {
-                Text ("")
 
-                Spacer(modifier = Modifier.padding(JsonSpacing.XS))
+            item {
+                Row {
+                    Text("")
 
-                Text("\"apps\"" , color = JsonSyntax.key)
-                Text(":")
+                    Spacer(modifier = Modifier.width(JsonSpacing.XS))
 
-                Spacer(modifier = Modifier.width(JsonSpacing.SM))
+                    Text("\"apps\"", color = JsonSyntax.key)
+                    Text(":")
 
-                Text("{" , color = JsonSyntax.parenthesis)
+                    Spacer(modifier = Modifier.width(JsonSpacing.SM))
+
+                    Text("{", color = JsonSyntax.parenthesis)
+                }
             }
 
-            state.apps.forEach { app ->
-                val appProperties = listOf(
-                    JsonProperty("packageName",app.packageName),
-                )
+            items(
+                items = state.apps,
+                key = { it.packageName }
+            ) { app ->
+
+                val appProperties = remember(app.packageName) {
+                    listOf(
+                        JsonProperty("packageName", app.packageName)
+                    )
+                }
 
                 JsonItem(
                     name = app.name,
                     properties = appProperties,
-                    isCollapsed = false,
+                    isCollapsed = app.isCollapsed,
                     onClick = {
                         val intent = context.packageManager
                             .getLaunchIntentForPackage(app.packageName)
 
-                        intent?.let {
-                            context.startActivity(it)
-                        }
+                        intent?.let(context::startActivity)
                     },
-                    onCollapseClicked = { },
+                    onCollapseClick = { viewModel.onCollapseClick(app.packageName) },
                 )
             }
 
-            Row() {
-                Text("}", color = JsonSyntax.parenthesis)
-                Text(",")
+            item {
+                Row {
+                    Text("}", color = JsonSyntax.parenthesis)
+                    Text(",")
+                }
             }
         }
     }

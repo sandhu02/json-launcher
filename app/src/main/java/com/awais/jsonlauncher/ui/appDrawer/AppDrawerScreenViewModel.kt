@@ -26,6 +26,19 @@ class AppDrawerScreenViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(AppDrawerScreenUiState())
     val uiState = _uiState.asStateFlow()
 
+    fun onCollapseClick(packageName: String) {
+        _uiState.update { state ->
+            state.copy(
+                apps = state.apps.map { app ->
+                    if (app.packageName == packageName)
+                        app.copy(isCollapsed = !app.isCollapsed)
+                    else
+                        app
+                }
+            )
+        }
+    }
+
     private fun loadApps() {
 
         viewModelScope.launch(Dispatchers.IO) {

@@ -1,6 +1,7 @@
 package com.awais.jsonlauncher.ui
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
@@ -20,6 +21,7 @@ fun JsonLauncher(
 
     HorizontalPager(
         state = pagerState,
+//        beyondViewportPageCount = 1,
         modifier = modifier
     ) { page ->
 
@@ -28,7 +30,7 @@ fun JsonLauncher(
                 ).absoluteValue
 
         Box(
-            modifier = Modifier.graphicsLayer {
+            modifier = Modifier.fillMaxSize().graphicsLayer {
                 alpha = 1f - pageOffset.coerceIn(0f, 1f) * 0.3f
 
                 val scale = 1f - pageOffset.coerceIn(0f, 1f) * 0.08f

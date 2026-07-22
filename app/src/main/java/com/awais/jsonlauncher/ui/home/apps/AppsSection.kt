@@ -38,27 +38,33 @@ fun AppsSection(
             Spacer(modifier = Modifier.width(JsonSpacing.SM))
 
             Text("{" , color = JsonSyntax.parenthesis)
+
+            if (state.isLoading){
+                Text("...")
+            }
         }
 
-        state.pinnedApps.forEach { app ->
-            val appProperties = listOf(
-                JsonProperty("packageName",app.packageName),
-            )
+        if (!state.isLoading) {
+            state.pinnedApps.forEach { app ->
+                val appProperties = listOf(
+                    JsonProperty("packageName",app.packageName),
+                )
 
-            JsonItem(
-                name = app.name,
-                properties = appProperties,
-                isCollapsed = state.isCollapsed,
-                onClick = {
-                    val intent = context.packageManager
-                        .getLaunchIntentForPackage(app.packageName)
+                JsonItem(
+                    name = app.name,
+                    properties = appProperties,
+                    isCollapsed = app.isCollapsed,
+                    onClick = {
+                        val intent = context.packageManager
+                            .getLaunchIntentForPackage(app.packageName)
 
-                    intent?.let {
-                        context.startActivity(it)
-                    }
-                },
-                onCollapseClicked = { viewModel.onCollapseClick() },
-            )
+                        intent?.let {
+                            context.startActivity(it)
+                        }
+                    },
+                    onCollapseClick = { viewModel.onCollapseClick(app.packageName) },
+                )
+            }
         }
 
         Row() {

@@ -1,6 +1,7 @@
 package com.awais.jsonlauncher.ui.home
 
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -15,15 +16,8 @@ import com.awais.jsonlauncher.ui.home.system.SystemSection
 import com.awais.jsonlauncher.ui.theme.JsonSyntax
 
 @Composable
-fun HomeScreen(
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        horizontalAlignment = Alignment.Start,
-        modifier = modifier
-//            .verticalScroll(rememberScrollState())
-//            .horizontalScroll(rememberScrollState())
-    ) {
+fun HomeScreen() {
+    Column {
         Text("{", color = JsonSyntax.parenthesis)
         SystemSection()
         NotificationsSection()
@@ -32,25 +26,3 @@ fun HomeScreen(
 
     }
 }
-
-//@Composable
-//fun AppItem(
-//    app: AppInfo,
-//    onClick: () -> Unit
-//) {
-//
-//    Column(
-//        horizontalAlignment = Alignment.CenterHorizontally,
-//        modifier = Modifier.clickable {
-//            onClick()
-//        }
-//    ) {
-//
-//        Image(
-//            painter = rememberDrawablePainter(app.icon),
-//            contentDescription = app.name
-//        )
-//
-//        Text(app.name)
-//    }
-//}

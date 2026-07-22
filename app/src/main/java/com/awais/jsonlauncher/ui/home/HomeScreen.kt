@@ -1,75 +1,56 @@
 package com.awais.jsonlauncher.ui.home
 
-import android.os.Build
-import androidx.annotation.RequiresApi
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import com.awais.jsonlauncher.models.AppInfo
-import com.google.accompanist.drawablepainter.rememberDrawablePainter
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.compose.foundation.clickable
+import com.awais.jsonlauncher.ui.home.apps.AppsSection
+import com.awais.jsonlauncher.ui.home.notification.NotificationsSection
+import com.awais.jsonlauncher.ui.home.system.SystemSection
+import com.awais.jsonlauncher.ui.theme.JsonSyntax
 
-@RequiresApi(Build.VERSION_CODES.BAKLAVA)
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    viewModel: HomeScreenViewModel = viewModel(),
 ) {
-    val context = LocalContext.current
-
-    val state by viewModel.uiState.collectAsState()
-
-    LazyVerticalGrid(
-        modifier = modifier,
-        columns = GridCells.Fixed(4)
-    ) {
-
-        items(state.apps) { app ->
-
-            AppItem(
-                app = app,
-                onClick = {
-                    val intent = context.packageManager
-                        .getLaunchIntentForPackage(app.packageName)
-
-                    intent?.let {
-                        context.startActivity(it)
-                    }
-                }
-            )
-
-        }
-    }
-}
-
-@Composable
-fun AppItem(
-    app: AppInfo,
-    onClick: () -> Unit
-) {
-
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.clickable {
-            onClick()
-        }
+        horizontalAlignment = Alignment.Start,
+        modifier = modifier
+//            .verticalScroll(rememberScrollState())
+//            .horizontalScroll(rememberScrollState())
     ) {
+        Text("{", color = JsonSyntax.parenthesis)
+        SystemSection()
+        NotificationsSection()
+        AppsSection()
+        Text("}", color = JsonSyntax.parenthesis)
 
-        Image(
-            painter = rememberDrawablePainter(app.icon),
-            contentDescription = app.name
-        )
-
-        Text(app.name)
     }
 }
+
+//@Composable
+//fun AppItem(
+//    app: AppInfo,
+//    onClick: () -> Unit
+//) {
+//
+//    Column(
+//        horizontalAlignment = Alignment.CenterHorizontally,
+//        modifier = Modifier.clickable {
+//            onClick()
+//        }
+//    ) {
+//
+//        Image(
+//            painter = rememberDrawablePainter(app.icon),
+//            contentDescription = app.name
+//        )
+//
+//        Text(app.name)
+//    }
+//}

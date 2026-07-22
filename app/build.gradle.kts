@@ -2,6 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -60,4 +63,10 @@ dependencies {
 
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.2")
     implementation("com.google.accompanist:accompanist-drawablepainter:0.37.3")
+
+    //hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+
+    implementation(libs.androidx.hilt.navigation.compose)
 }

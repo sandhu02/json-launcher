@@ -1,34 +1,38 @@
 package com.awais.jsonlauncher.repositories
 
-import com.awais.jsonlauncher.models.AppInfo
 import android.content.Context
-import android.content.Intent
-import android.os.Build
-import androidx.annotation.RequiresApi
+import android.content.pm.LauncherApps
+import android.os.Process
+import com.awais.jsonlauncher.models.AppInfo
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class AppsRepository(
-    private val context: Context
+
+@Singleton
+class AppsRepository @Inject constructor(
+    @ApplicationContext private val context: Context
 ) {
 
-    @RequiresApi(Build.VERSION_CODES.BAKLAVA)
+    private var cachedApps: List<AppInfo>? = null
+
     fun getInstalledApps(): List<AppInfo> {
 
-        val intent = Intent(Intent.ACTION_MAIN).apply {
-            addCategory(Intent.CATEGORY_LAUNCHER)
-        }
+        cachedApps?.let { return it }
 
-        val pm = context.packageManager
+        val launcherApps = context.getSystemService(LauncherApps::class.java)
 
-        return pm.queryIntentActivities(intent, 0)
-            .sortedBy {
-                it.loadLabel(pm).toString()
-            }
+        cachedApps = launcherApps
+            .getActivityList(null, Process.myUserHandle())
+            .sortedBy { it.label.toString() }
             .map {
                 AppInfo(
-                    name = it.loadLabel(pm).toString(),
-                    packageName = it.activityInfo.packageName,
-                    icon = it.loadIcon(pm)
+                    name = it.label.toString(),
+                    packageName = it.applicationInfo.packageName,
+                    icon = it.getIcon(0)
                 )
             }
+
+        return cachedApps!!
     }
 }

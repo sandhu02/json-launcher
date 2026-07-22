@@ -1,5 +1,6 @@
-package com.awais.jsonlauncher.ui.home
+package com.awais.jsonlauncher.ui.appDrawer
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.awais.jsonlauncher.models.AppInfo
@@ -12,28 +13,26 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-data class HomeScreenUiState(
+data class AppDrawerScreenUiState(
     val apps: List<AppInfo> = emptyList(),
-    val isLoading: Boolean = true
+    val isLoading: Boolean = true,
 )
 
 @HiltViewModel
-class HomeScreenViewModel @Inject constructor(
+class AppDrawerScreenViewModel @Inject constructor(
     private val repository: AppsRepository
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(HomeScreenUiState())
+    private val _uiState = MutableStateFlow(AppDrawerScreenUiState())
     val uiState = _uiState.asStateFlow()
-
-    init {
-        loadApps()
-    }
 
     private fun loadApps() {
 
         viewModelScope.launch(Dispatchers.IO) {
 
             val apps = repository.getInstalledApps()
+
+            Log.d("InstalledApp" , apps.toString())
 
             _uiState.update {
                 it.copy(
@@ -42,5 +41,9 @@ class HomeScreenViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    init {
+        loadApps()
     }
 }

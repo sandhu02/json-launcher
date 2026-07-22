@@ -1,10 +1,17 @@
 package com.awais.jsonlauncher.ui.theme
 
+import android.os.Build
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.dynamicDarkColorScheme
+import androidx.compose.material3.dynamicLightColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 
-private val JsonColorScheme = darkColorScheme(
+private val JsonDarkColorScheme = darkColorScheme(
     primary = Primary,
     onPrimary = OnPrimary,
     primaryContainer = PrimaryContainer,
@@ -45,13 +52,28 @@ private val JsonColorScheme = darkColorScheme(
     surfaceTint = PrimaryContainer
 )
 
+private val JsonLightColorScheme = JsonDarkColorScheme
+
 @Composable
 fun JsonLauncherTheme(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    // Dynamic color is available on Android 12+
+    dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
 
+    val colorScheme = when {
+        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+            val context = LocalContext.current
+            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+        }
+
+        darkTheme -> JsonDarkColorScheme
+        else -> JsonLightColorScheme
+    }
+
     MaterialTheme(
-        colorScheme = JsonColorScheme,
+        colorScheme = colorScheme,
         typography = Typography,
         content = content
     )

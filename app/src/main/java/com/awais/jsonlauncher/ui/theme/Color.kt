@@ -35,6 +35,8 @@ val JsonNumber = Color(0xFFB5CEA8)    // Green
 val JsonBoolean = Color(0xFFC586C0)   // Purple
 val JsonComment = Color(0xFF6A9955)   // VS Code Comment
 
+val JsonParenthesis = Color(0xFFFFD700)    // VS Code JSON Parenthesis
+
 // Material Colors
 val Primary = Color(0xFFA2D9FF)
 val OnPrimary = Color(0xFF00344C)

@@ -7,7 +7,8 @@ data class SyntaxColors(
     val string: Color,
     val number: Color,
     val boolean: Color,
-    val comment: Color
+    val comment: Color,
+    val parenthesis: Color
 )
 
 val JsonSyntax = SyntaxColors(
@@ -15,5 +16,6 @@ val JsonSyntax = SyntaxColors(
     string = JsonString,
     number = JsonNumber,
     boolean = JsonBoolean,
-    comment = JsonComment
+    comment = JsonComment,
+    parenthesis = JsonParenthesis
 )

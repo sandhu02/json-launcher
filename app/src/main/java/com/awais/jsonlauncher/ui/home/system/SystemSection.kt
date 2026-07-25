@@ -4,13 +4,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.awais.jsonlauncher.models.JsonProperty
+import com.awais.jsonlauncher.ui.JsonLauncherAppScreens
 import com.awais.jsonlauncher.ui.jsonObject.JsonItem
 
 
 @Composable
 fun SystemSection(
     viewModel: SystemSectionViewModel = hiltViewModel(),
+    navController: NavHostController
 ) {
     val state by viewModel.uiState.collectAsState()
 
@@ -19,7 +22,7 @@ fun SystemSection(
         JsonProperty("date",state.date),
         JsonProperty("battery",state.battery.toString() , valueType = "INTEGER"),
         JsonProperty("LauncherSettings","launch" , valueType = "COMMENT",
-            onValueClick = {}
+            onValueClick = { navController.navigate(route = JsonLauncherAppScreens.SettingsScreen.name) }
         )
     )
     JsonItem(

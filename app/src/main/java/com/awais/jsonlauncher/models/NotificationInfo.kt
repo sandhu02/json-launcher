@@ -6,5 +6,6 @@ data class NotificationInfo(
     val appName: String,
     val title: String?,
     val text: String?,
-    val postTime: Long
+    val postTime: Long,
+    val isCollapsed: Boolean = true
 )

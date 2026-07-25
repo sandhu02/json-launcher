@@ -1,5 +1,6 @@
 package com.awais.jsonlauncher.ui.home.apps
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -26,9 +27,16 @@ fun AppsSection(
     val state by viewModel.uiState.collectAsState()
     val context = LocalContext.current
 
-    Column(modifier = Modifier.padding(start = JsonSpacing.Indent)) {
+    Column(
+        modifier = Modifier
+            .padding(start = JsonSpacing.Indent)
+    ) {
         Row() {
-            Text ("")
+            Text (if (state.isCollapsed) ">" else "˅" ,
+                modifier = Modifier.clickable {
+                    viewModel.onCollapseClick()
+                }
+            )
 
             Spacer(modifier = Modifier.padding(JsonSpacing.XS))
 
@@ -42,35 +50,43 @@ fun AppsSection(
             if (state.isLoading){
                 Text("...")
             }
-        }
 
-        if (!state.isLoading) {
-            state.pinnedApps.forEach { app ->
-                val appProperties = listOf(
-                    JsonProperty("packageName",app.packageName),
-                )
-
-                JsonItem(
-                    name = app.name,
-                    properties = appProperties,
-                    isCollapsed = app.isCollapsed,
-                    onClick = {
-                        val intent = context.packageManager
-                            .getLaunchIntentForPackage(app.packageName)
-
-                        intent?.let {
-                            context.startActivity(it)
-                        }
-                    },
-                    onCollapseClick = { viewModel.onCollapseClick(app.packageName) },
-                )
+            if (state.isCollapsed) {
+                Text("..")
+                Text("}" , color = JsonSyntax.parenthesis)
+                Text(",")
             }
         }
 
-        Row() {
-            Text("}", color = JsonSyntax.parenthesis)
-            Text(",")
+        if (!state.isCollapsed){
+
+            if (!state.isLoading) {
+                state.pinnedApps.forEach { app ->
+                    val appProperties = listOf(
+                        JsonProperty("packageName",app.packageName),
+                    )
+
+                    JsonItem(
+                        name = app.name,
+                        properties = appProperties,
+                        isCollapsed = app.isCollapsed,
+                        onClick = {
+                            val intent = context.packageManager
+                                .getLaunchIntentForPackage(app.packageName)
+
+                            intent?.let {
+                                context.startActivity(it)
+                            }
+                        },
+                        onCollapseClick = { viewModel.onAppCollapseClick(app.packageName) },
+                    )
+                }
+            }
+
+            Row() {
+                Text("}", color = JsonSyntax.parenthesis)
+                Text(",")
+            }
         }
     }
-
 }

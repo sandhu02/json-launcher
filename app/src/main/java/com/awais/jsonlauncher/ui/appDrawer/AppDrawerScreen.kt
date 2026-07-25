@@ -37,7 +37,6 @@ fun AppDrawerScreen(
         LazyColumn(
             modifier = Modifier.weight(1f)
         ) {
-
             item {
                 Row {
                     Text("")

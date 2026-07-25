@@ -35,7 +35,7 @@ class AppsSectionViewModel @Inject constructor(
         _uiState.update { it.copy(isCollapsed = !uiState.value.isCollapsed) }
     }
 
-    fun onCollapseClick(packageName: String) {
+    fun onAppCollapseClick(packageName: String) {
         _uiState.update { state ->
             state.copy(
                 pinnedApps = state.pinnedApps.map { app ->

@@ -56,26 +56,23 @@ fun NotificationsSection(
         }
 
         if (!isCollapsed){
-            LazyColumn() {
-                items(
-                    items = state.notifications,
-                    key = { it.key }
-                ) { notification ->
-                    val notificationProperties = remember(notification.key) {
-                        listOf(
-                            JsonProperty(key = "title", value = notification.title ?: ""),
-                            JsonProperty(key = "text", value = notification.text ?: "")
-                        )
-                    }
-                    JsonItem(
-                        name = notification.appName,
-                        properties = notificationProperties,
-                        isCollapsed = false,
-                        onCollapseClick = {},
-                        onClick = {}
+
+            state.notifications.forEach { notification ->
+                val notificationProperties = remember(notification.key) {
+                    listOf(
+                        JsonProperty(key = "title", value = notification.title ?: ""),
+                        JsonProperty(key = "text", value = notification.text ?: "")
                     )
                 }
+                JsonItem(
+                    name = notification.appName,
+                    properties = notificationProperties,
+                    isCollapsed = notification.isCollapsed,
+                    onCollapseClick = { viewModel.onNotificationCollapseClick(notification.key) },
+                    onClick = {}
+                )
             }
+
 
             Row {
                 Text("]" , color = JsonSyntax.parenthesis)

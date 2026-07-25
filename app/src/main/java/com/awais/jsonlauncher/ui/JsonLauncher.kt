@@ -21,7 +21,7 @@ fun JsonLauncher(
 
     HorizontalPager(
         state = pagerState,
-//        beyondViewportPageCount = 1,
+        beyondViewportPageCount = 1,
         modifier = modifier
     ) { page ->
 

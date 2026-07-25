@@ -37,6 +37,19 @@ class NotificationsSectionViewModel @Inject constructor(
         _uiState.update { it.copy(isCollapsed = !uiState.value.isCollapsed) }
     }
 
+    fun onNotificationCollapseClick(notificationKey: String) {
+        _uiState.update { state ->
+            state.copy(
+                notifications = state.notifications.map { notification ->
+                    if (notification.key == notificationKey)
+                        notification.copy(isCollapsed = !notification.isCollapsed)
+                    else
+                        notification
+                }
+            )
+        }
+    }
+
     init {
         updateNotifications()
     }

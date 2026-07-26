@@ -24,12 +24,10 @@ class NotificationRepository @Inject constructor() {
     }
 
     fun setNotifications(notifications: List<NotificationInfo>) {
-        Log.d("NotificationRepository", "Setting ${notifications.size} notifications")
         _notifications.value = notifications
     }
 
     fun addNotification(notification: NotificationInfo) {
-        Log.d("NotificationRepository", "Adding notification from: ${notification.appName}")
         _notifications.update { current ->
             // Add new at the top, remove duplicates
             listOf(notification) + current.filter {
@@ -39,7 +37,6 @@ class NotificationRepository @Inject constructor() {
     }
 
     fun removeNotification(packageName: String, postTime: Long) {
-        Log.d("NotificationRepository", "Removing notification from: $packageName")
         _notifications.update {
             it.filterNot { n -> n.packageName == packageName && n.postTime == postTime }
         }

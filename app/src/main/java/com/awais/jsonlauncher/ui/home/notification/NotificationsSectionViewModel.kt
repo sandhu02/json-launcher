@@ -1,6 +1,5 @@
 package com.awais.jsonlauncher.ui.home.notification
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.awais.jsonlauncher.models.NotificationInfo
@@ -27,7 +26,6 @@ class NotificationsSectionViewModel @Inject constructor(
     fun updateNotifications() {
         viewModelScope.launch {
             repository.notifications.collect { notifications ->
-                Log.d("notification" , notifications.toString())
                 _uiState.update { it.copy(notifications = notifications) }
             }
         }

@@ -1,17 +1,18 @@
 package com.awais.jsonlauncher.ui
 
+import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.awais.jsonlauncher.ui.appDrawer.AppDrawerScreen
 import com.awais.jsonlauncher.ui.home.HomeScreen
@@ -26,8 +27,8 @@ enum class JsonLauncherAppScreens(val title : String) {
 
 @Composable
 fun JsonLauncher(
-    navController: NavHostController = rememberNavController(),
     modifier: Modifier = Modifier,
+    navController: NavHostController = rememberNavController(),
 ) {
     NavHost(
         navController = navController,
@@ -49,7 +50,8 @@ fun JsonLauncher(
                         ).absoluteValue
 
                 Box(
-                    modifier = Modifier.fillMaxSize().graphicsLayer {
+                    modifier = Modifier.padding(4.dp)
+                        .fillMaxSize().graphicsLayer {
                         alpha = 1f - pageOffset.coerceIn(0f, 1f) * 0.3f
 
                         val scale = 1f - pageOffset.coerceIn(0f, 1f) * 0.08f
@@ -65,7 +67,29 @@ fun JsonLauncher(
             }
         }
 
-        composable(route = JsonLauncherAppScreens.SettingsScreen.name) {
+        composable(
+            route = JsonLauncherAppScreens.SettingsScreen.name,
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left
+                )
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Right
+                )
+            },
+            popEnterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left
+                )
+            },
+            popExitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Right
+                )
+            }
+        ) {
             LauncherSettings(navController = navController)
         }
     }

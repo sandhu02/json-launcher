@@ -21,7 +21,7 @@ fun SystemSection(
         JsonProperty("time",state.time),
         JsonProperty("date",state.date),
         JsonProperty("battery",state.battery.toString() , valueType = "INTEGER"),
-        JsonProperty("LauncherSettings","launch" , valueType = "COMMENT",
+        JsonProperty("LauncherSettings","launch" , valueType = "BOOLEAN",
             onValueClick = { navController.navigate(route = JsonLauncherAppScreens.SettingsScreen.name) }
         )
     )

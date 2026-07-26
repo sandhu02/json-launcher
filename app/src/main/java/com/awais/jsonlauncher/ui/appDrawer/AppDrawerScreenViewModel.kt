@@ -1,6 +1,6 @@
 package com.awais.jsonlauncher.ui.appDrawer
 
-import android.util.Log
+import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.awais.jsonlauncher.models.AppInfo
@@ -16,6 +16,7 @@ import javax.inject.Inject
 data class AppDrawerScreenUiState(
     val apps: List<AppInfo> = emptyList(),
     val isLoading: Boolean = true,
+    val searchQuery: String = ""
 )
 
 @HiltViewModel
@@ -25,6 +26,14 @@ class AppDrawerScreenViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(AppDrawerScreenUiState())
     val uiState = _uiState.asStateFlow()
+
+    fun onSearchQueryChange(query: String) {
+        _uiState.update {
+            it.copy(
+                searchQuery = query,
+            )
+        }
+    }
 
     fun onCollapseClick(packageName: String) {
         _uiState.update { state ->
@@ -45,8 +54,6 @@ class AppDrawerScreenViewModel @Inject constructor(
 
             val apps = repository.getInstalledApps()
 
-            Log.d("InstalledApp" , apps.toString())
-
             _uiState.update {
                 it.copy(
                     apps = apps,
@@ -55,6 +62,13 @@ class AppDrawerScreenViewModel @Inject constructor(
             }
         }
     }
+
+    fun launchShortcut(packageName: String, shortcutId: String) {
+        viewModelScope.launch {
+            repository.launchShortcut(packageName, shortcutId)
+        }
+    }
+
 
     init {
         loadApps()

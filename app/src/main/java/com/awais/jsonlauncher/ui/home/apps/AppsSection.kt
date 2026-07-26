@@ -13,9 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.awais.jsonlauncher.models.JsonProperty
-import com.awais.jsonlauncher.ui.home.HomeScreenViewModel
 import com.awais.jsonlauncher.ui.jsonObject.JsonItem
 import com.awais.jsonlauncher.ui.theme.JsonSpacing
 import com.awais.jsonlauncher.ui.theme.JsonSyntax
@@ -32,7 +30,7 @@ fun AppsSection(
             .padding(start = JsonSpacing.Indent)
     ) {
         Row() {
-            Text (if (state.isCollapsed) ">" else "˅" ,
+            Text (if (state.isCollapsed) ">" else "⌄" ,
                 modifier = Modifier.clickable {
                     viewModel.onCollapseClick()
                 }

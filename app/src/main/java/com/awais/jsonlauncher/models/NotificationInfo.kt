@@ -7,5 +7,5 @@ data class NotificationInfo(
     val title: String?,
     val text: String?,
     val postTime: Long,
-    val isCollapsed: Boolean = true
+    val isCollapsed: Boolean = false
 )

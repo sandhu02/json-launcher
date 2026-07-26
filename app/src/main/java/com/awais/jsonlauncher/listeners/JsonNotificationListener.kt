@@ -62,7 +62,6 @@ class JsonNotificationListener : NotificationListenerService() {
     }
 
     override fun onNotificationPosted(sbn: StatusBarNotification) {
-        Log.d("JsonNotificationListener", "Notification Posted: ${sbn.packageName}")
         // Filter out ongoing (like music players or system status) if you only want dismissible ones
         val isOngoing = (sbn.notification.flags and Notification.FLAG_ONGOING_EVENT) != 0
         if (!isOngoing) {
@@ -71,7 +70,6 @@ class JsonNotificationListener : NotificationListenerService() {
     }
 
     override fun onNotificationRemoved(sbn: StatusBarNotification) {
-        Log.d("JsonNotificationListener", "Notification Removed: ${sbn.packageName}")
         repository.removeNotification(sbn.packageName, sbn.postTime)
     }
 }

@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import com.awais.jsonlauncher.listeners.JsonNotificationListener
 import com.awais.jsonlauncher.ui.JsonLauncher
 import com.awais.jsonlauncher.ui.theme.JsonLauncherTheme
 import dagger.hilt.android.AndroidEntryPoint

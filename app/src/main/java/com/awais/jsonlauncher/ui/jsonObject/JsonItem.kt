@@ -29,7 +29,7 @@ fun JsonItem(
             .clickable { onClick() }
     ) {
         Row() {
-            Text(if (isCollapsed) ">" else "˅" ,
+            Text(if (isCollapsed) ">" else "⌄" ,
                 modifier = Modifier.clickable {
                     onCollapseClick()
                 }

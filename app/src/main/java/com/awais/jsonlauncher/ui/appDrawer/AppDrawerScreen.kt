@@ -22,16 +22,29 @@ import com.awais.jsonlauncher.ui.theme.JsonSyntax
 
 @Composable
 fun AppDrawerScreen(
+    modifier: Modifier = Modifier,
     viewModel : AppDrawerScreenViewModel = hiltViewModel (),
-    modifier: Modifier = Modifier.fillMaxSize(),
 ) {
     val state by viewModel.uiState.collectAsState()
     val context = LocalContext.current
 
+    val filteredApps = remember(
+        state.apps,
+        state.searchQuery
+    ) {
+        if (state.searchQuery.isBlank()) {
+            state.apps
+        } else {
+            state.apps.filter {
+                it.name.contains(state.searchQuery, ignoreCase = true)
+            }
+        }
+    }
+
     Column(modifier = modifier) {
         SearchBar(
-            query = "",
-            onQueryChange = {}
+            query = state.searchQuery,
+            onQueryChange = { viewModel.onSearchQueryChange(it) }
         )
 
         LazyColumn(
@@ -53,14 +66,30 @@ fun AppDrawerScreen(
             }
 
             items(
-                items = state.apps,
+                items = filteredApps,
                 key = { it.packageName }
             ) { app ->
 
                 val appProperties = remember(app.packageName) {
-                    listOf(
-                        JsonProperty("packageName", app.packageName)
-                    )
+                    buildList {
+                        add(JsonProperty("packageName", app.packageName))
+
+                        app.shortcuts.forEach { shortcut ->
+                            add(
+                                JsonProperty(
+                                    key = shortcut.shortLabel,
+                                    value = "launch",
+                                    valueType = "BOOLEAN",
+                                    onValueClick = {
+                                        viewModel.launchShortcut(
+                                            app.packageName,
+                                            shortcut.id
+                                        )
+                                    }
+                                )
+                            )
+                        }
+                    }
                 }
 
                 JsonItem(

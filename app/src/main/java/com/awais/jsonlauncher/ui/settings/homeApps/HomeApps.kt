@@ -56,7 +56,7 @@ fun HomeApps(
                         Row() {
                             Text("-" ,
                                 modifier = Modifier.clickable {
-
+                                    viewModel.removeFromHomeApps(app.packageName)
                                 }
                             )
 
@@ -78,7 +78,10 @@ fun HomeApps(
                     AddApps(
                         apps = state.apps,
                         isAddCollapsed = state.isAddCollapsed,
-                        onAddCollapseClick = { viewModel.onAddCollapseClick() }
+                        onAddCollapseClick = { viewModel.onAddCollapseClick() },
+                        addToHomeApps = {
+                            packageName ->  viewModel.addToHomeApps(packageName)
+                        },
                     )
 
                 }

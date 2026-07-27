@@ -18,7 +18,8 @@ import com.awais.jsonlauncher.ui.theme.JsonSyntax
 fun AddApps(
     apps : List<AppInfo>,
     isAddCollapsed : Boolean,
-    onAddCollapseClick : () -> Unit
+    onAddCollapseClick : () -> Unit,
+    addToHomeApps : (String) -> Unit,
 ) {
     Row() {
         Text(if (isAddCollapsed) ">" else "⌄" ,
@@ -50,9 +51,9 @@ fun AddApps(
         ) {
             apps.forEach { app ->
                 Row() {
-                    Text(if (isAddCollapsed) "+" else "-" ,
+                    Text("+" ,
                         modifier = Modifier.clickable {
-                            onAddCollapseClick()
+                            addToHomeApps(app.packageName)
                         }
                     )
 

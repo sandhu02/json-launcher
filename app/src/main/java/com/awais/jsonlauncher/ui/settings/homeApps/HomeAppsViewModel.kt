@@ -1,5 +1,6 @@
 package com.awais.jsonlauncher.ui.settings.homeApps
 
+import android.R
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.awais.jsonlauncher.models.AppInfo
@@ -58,16 +59,29 @@ class HomeAppsViewModel @Inject constructor(
         }
     }
 
-    private fun getPinnedPackages() : List<String> {
-        return listOf(
-            "com.google.android.dialer",
-            "com.google.android.apps.messaging",
-            "com.whatsapp",
-            "com.google.android.GoogleCamera"
-        )
+    fun addToHomeApps(packageName : String) {
+        pinnedPackages.add(packageName)
+        loadApps()
     }
+
+    fun removeFromHomeApps(packageName: String) {
+        pinnedPackages.remove(packageName)
+        loadApps()
+    }
+
+    private fun getPinnedPackages() : List<String> {
+        return pinnedPackages
+    }
+
+    private var pinnedPackages = mutableListOf<String>(
+        "com.google.android.dialer",
+        "com.google.android.apps.messaging",
+        "com.whatsapp",
+        "com.google.android.GoogleCamera"
+    )
 
     init {
         loadApps()
     }
+    
 }

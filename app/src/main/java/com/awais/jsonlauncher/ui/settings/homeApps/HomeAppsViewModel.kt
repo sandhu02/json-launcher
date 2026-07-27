@@ -1,4 +1,4 @@
-package com.awais.jsonlauncher.ui.home.apps
+package com.awais.jsonlauncher.ui.settings.homeApps
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,37 +12,29 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-data class AppsSectionUiState(
+
+data class HomeAppsUiState(
     val isCollapsed: Boolean = false,
-    val isAppCollapsed: List<Boolean> = emptyList(),
+    val isAddCollapsed: Boolean = true,
     val apps: List<AppInfo> = emptyList(),
     val pinnedApps: List<AppInfo> = emptyList(),
     val isLoading: Boolean = false
 )
 
+
 @HiltViewModel
-class AppsSectionViewModel @Inject constructor(
+class HomeAppsViewModel @Inject constructor(
     private val repository: AppsRepository
 ) : ViewModel() {
-
-    private val _uiState = MutableStateFlow(AppsSectionUiState())
+    private val _uiState = MutableStateFlow(HomeAppsUiState())
     val uiState = _uiState.asStateFlow()
 
     fun onCollapseClick() {
         _uiState.update { it.copy(isCollapsed = !uiState.value.isCollapsed) }
     }
 
-    fun onAppCollapseClick(packageName: String) {
-        _uiState.update { state ->
-            state.copy(
-                pinnedApps = state.pinnedApps.map { app ->
-                    if (app.packageName == packageName)
-                        app.copy(isCollapsed = !app.isCollapsed)
-                    else
-                        app
-                }
-            )
-        }
+    fun onAddCollapseClick() {
+        _uiState.update { it.copy(isAddCollapsed = !uiState.value.isAddCollapsed) }
     }
 
     private fun loadApps() {
@@ -67,19 +59,12 @@ class AppsSectionViewModel @Inject constructor(
     }
 
     private fun getPinnedPackages() : List<String> {
-         return listOf(
+        return listOf(
             "com.google.android.dialer",
             "com.google.android.apps.messaging",
             "com.whatsapp",
             "com.google.android.GoogleCamera"
         )
-
-    }
-
-    fun launchShortcut(packageName: String, shortcutId: String) {
-        viewModelScope.launch {
-            repository.launchShortcut(packageName, shortcutId)
-        }
     }
 
     init {

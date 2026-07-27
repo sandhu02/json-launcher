@@ -35,6 +35,14 @@ class AppDrawerScreenViewModel @Inject constructor(
         }
     }
 
+    fun resetQueryField() {
+        _uiState.update {
+            it.copy(
+                searchQuery = "",
+            )
+        }
+    }
+
     fun onCollapseClick(packageName: String) {
         _uiState.update { state ->
             state.copy(

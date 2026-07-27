@@ -1,5 +1,8 @@
 package com.awais.jsonlauncher.ui.home.apps
 
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -60,9 +64,38 @@ fun AppsSection(
 
             if (!state.isLoading) {
                 state.pinnedApps.forEach { app ->
-                    val appProperties = listOf(
-                        JsonProperty("packageName",app.packageName),
-                    )
+                    val appProperties = remember(app.packageName) {
+                        buildList {
+                            add(JsonProperty("packageName", app.packageName))
+                            add(JsonProperty(
+                                "Info",
+                                "launch" ,
+                                "BOOLEAN",
+                                onValueClick = {
+                                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                                        data = Uri.fromParts("package", app.packageName, null)
+                                    }
+                                    context.startActivity(intent)
+                                }
+                            )
+                            )
+                            app.shortcuts.forEach { shortcut ->
+                                add(
+                                    JsonProperty(
+                                        key = shortcut.shortLabel,
+                                        value = "launch",
+                                        valueType = "BOOLEAN",
+                                        onValueClick = {
+                                            viewModel.launchShortcut(
+                                                app.packageName,
+                                                shortcut.id
+                                            )
+                                        }
+                                    )
+                                )
+                            }
+                        }
+                    }
 
                     JsonItem(
                         name = app.name,

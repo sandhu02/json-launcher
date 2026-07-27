@@ -19,12 +19,24 @@ import com.awais.jsonlauncher.models.JsonProperty
 import com.awais.jsonlauncher.ui.jsonObject.JsonItem
 import com.awais.jsonlauncher.ui.theme.JsonSpacing
 import com.awais.jsonlauncher.ui.theme.JsonSyntax
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
+import androidx.activity.compose.BackHandler
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+
 
 @Composable
 fun AppDrawerScreen(
     modifier: Modifier = Modifier,
     viewModel : AppDrawerScreenViewModel = hiltViewModel (),
+    navController: NavHostController
 ) {
+    BackHandler(enabled = true) {
+        viewModel.resetQueryField()
+    }
+
     val state by viewModel.uiState.collectAsState()
     val context = LocalContext.current
 
@@ -73,7 +85,18 @@ fun AppDrawerScreen(
                 val appProperties = remember(app.packageName) {
                     buildList {
                         add(JsonProperty("packageName", app.packageName))
-
+                        add(JsonProperty(
+                            "Info",
+                            "launch" ,
+                            "BOOLEAN",
+                            onValueClick = {
+                                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                                    data = Uri.fromParts("package", app.packageName, null)
+                                }
+                                context.startActivity(intent)
+                            }
+                            )
+                        )
                         app.shortcuts.forEach { shortcut ->
                             add(
                                 JsonProperty(

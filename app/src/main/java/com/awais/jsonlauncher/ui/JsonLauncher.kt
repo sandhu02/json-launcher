@@ -1,5 +1,6 @@
 package com.awais.jsonlauncher.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -35,6 +36,8 @@ fun JsonLauncher(
         startDestination = JsonLauncherAppScreens.MainScreen.name,
     ){
         composable(route = JsonLauncherAppScreens.MainScreen.name) {
+//
+
             val pagerState = rememberPagerState(
                 initialPage = 0
             ) { 2 }
@@ -61,7 +64,7 @@ fun JsonLauncher(
                 ) {
                     when (page) {
                         0 -> HomeScreen(navController = navController)
-                        1 -> AppDrawerScreen()
+                        1 -> AppDrawerScreen(navController = navController)
                     }
                 }
             }
@@ -90,7 +93,10 @@ fun JsonLauncher(
                 )
             }
         ) {
-            LauncherSettings(navController = navController)
+            LauncherSettings(
+                modifier = modifier,
+                navController = navController
+            )
         }
     }
 

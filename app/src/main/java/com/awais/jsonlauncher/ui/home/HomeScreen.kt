@@ -1,8 +1,6 @@
 package com.awais.jsonlauncher.ui.home
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.rememberScrollState
@@ -26,17 +24,17 @@ fun HomeScreen(
         modifier = Modifier
             .verticalScroll(verticalScrollState)
     ) {
-        Text("{", color = JsonSyntax.parenthesis)
+        Text("{", color = JsonSyntax.colors.parenthesis)
         SystemSection(navController = navController)
         NotificationsSection()
         AppsSection()
-        Text("}", color = JsonSyntax.parenthesis)
+        Text("}", color = JsonSyntax.colors.parenthesis)
 
         Spacer(
             modifier = Modifier.height(JsonSpacing.LG)
         )
 
-        Text("/* Swipe Left for App Drawer */" , color = JsonSyntax.comment)
+        Text("/* Swipe Left for App Drawer */" , color = JsonSyntax.colors.comment)
 
         Spacer(
             modifier = Modifier.height(JsonSpacing.LG)

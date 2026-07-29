@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.pm.LauncherApps
 import android.os.Build
 import android.os.Process
-import android.util.Log
 import androidx.annotation.RequiresApi
 import com.awais.jsonlauncher.models.AppInfo
 import com.awais.jsonlauncher.models.AppShortcut
@@ -51,6 +50,11 @@ class AppsRepository @Inject constructor(
     private fun getAppShortcuts(
         launcherApps: LauncherApps
     ): Map<String, List<AppShortcut>> {
+
+        if (!launcherApps.hasShortcutHostPermission()) {
+            return emptyMap()
+        }
+
 
         val query = LauncherApps.ShortcutQuery().apply {
             setQueryFlags(

@@ -35,16 +35,16 @@ fun NotificationsSection(
 
             Spacer(modifier = Modifier.width(JsonSpacing.XS))
 
-            Text("\"notifications\"" , color = JsonSyntax.key)
+            Text("\"notifications\"" , color = JsonSyntax.colors.key)
             Text(":")
 
             Spacer(modifier = Modifier.width(JsonSpacing.SM))
 
-            Text("[" , color = JsonSyntax.parenthesis)
+            Text("[" , color = JsonSyntax.colors.parenthesis)
 
             if (isCollapsed){
                 Text("..")
-                Text("]", color = JsonSyntax.parenthesis)
+                Text("]", color = JsonSyntax.colors.parenthesis)
                 Text(",")
             }
 
@@ -70,7 +70,7 @@ fun NotificationsSection(
 
 
             Row {
-                Text("]" , color = JsonSyntax.parenthesis)
+                Text("]" , color = JsonSyntax.colors.parenthesis)
                 Text(",")
             }
 

@@ -1,9 +1,12 @@
 package com.awais.jsonlauncher.ui.appDrawer
 
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -15,16 +18,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.awais.jsonlauncher.models.JsonProperty
 import com.awais.jsonlauncher.ui.jsonObject.JsonItem
 import com.awais.jsonlauncher.ui.theme.JsonSpacing
 import com.awais.jsonlauncher.ui.theme.JsonSyntax
-import android.content.Intent
-import android.net.Uri
-import android.provider.Settings
-import androidx.activity.compose.BackHandler
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 
 
 @Composable
@@ -68,12 +66,12 @@ fun AppDrawerScreen(
 
                     Spacer(modifier = Modifier.width(JsonSpacing.XS))
 
-                    Text("\"apps\"", color = JsonSyntax.key)
+                    Text("\"apps\"", color = JsonSyntax.colors.key)
                     Text(":")
 
                     Spacer(modifier = Modifier.width(JsonSpacing.SM))
 
-                    Text("{", color = JsonSyntax.parenthesis)
+                    Text("{", color = JsonSyntax.colors.parenthesis)
                 }
             }
 
@@ -131,7 +129,7 @@ fun AppDrawerScreen(
 
             item {
                 Row {
-                    Text("}", color = JsonSyntax.parenthesis)
+                    Text("}", color = JsonSyntax.colors.parenthesis)
                     Text(",")
                 }
             }

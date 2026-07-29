@@ -22,29 +22,29 @@ fun SearchBar(
         modifier = Modifier
             .padding(bottom = JsonSpacing.Gutter)
     ) {
-        Text("sys" , color = JsonSyntax.key)
+        Text("sys" , color = JsonSyntax.colors.key)
         Text(".")
-        Text("launch" , color = JsonSyntax.boolean)
-        Text("(" , color = JsonSyntax.parenthesis)
+        Text("launch" , color = JsonSyntax.colors.boolean)
+        Text("(" , color = JsonSyntax.colors.parenthesis)
         BasicTextField(
             value = query,
             onValueChange = onQueryChange,
             modifier = Modifier.width(IntrinsicSize.Min),
             textStyle = LocalTextStyle.current.copy(
-                color = JsonSyntax.string
+                color = JsonSyntax.colors.string
             ),
-            cursorBrush = SolidColor(JsonSyntax.string),
+            cursorBrush = SolidColor(JsonSyntax.colors.string),
             decorationBox = { innerTextField ->
                 if (query.isEmpty()) {
                     Text(
                         "_",
-                        color = JsonSyntax.comment
+                        color = JsonSyntax.colors.comment
                     )
                 }
                 innerTextField()
             }
         )
 
-        Text(")" , color = JsonSyntax.parenthesis)
+        Text(")" , color = JsonSyntax.colors.parenthesis)
     }
 }

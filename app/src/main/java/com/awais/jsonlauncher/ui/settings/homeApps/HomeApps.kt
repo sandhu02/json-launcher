@@ -33,16 +33,16 @@ fun HomeApps(
 
             Spacer(modifier = Modifier.width(JsonSpacing.XS))
 
-            Text("\"home apps\"", color = JsonSyntax.key)
+            Text("\"home apps\"", color = JsonSyntax.colors.key)
             Text(":")
 
             Spacer(modifier = Modifier.width(JsonSpacing.SM))
 
-            Text("{", color = JsonSyntax.parenthesis)
+            Text("{", color = JsonSyntax.colors.parenthesis)
 
             if (state.isCollapsed) {
                 Text("..")
-                Text("}" , color = JsonSyntax.parenthesis)
+                Text("}" , color = JsonSyntax.colors.parenthesis)
                 Text(",")
             }
         }
@@ -54,7 +54,7 @@ fun HomeApps(
                 if (!state.isLoading) {
                     state.pinnedApps.forEach { app ->
                         Row() {
-                            Text("-" ,
+                            Text("⨯" ,
                                 modifier = Modifier.clickable {
                                     viewModel.removeFromHomeApps(app.packageName)
                                 }
@@ -62,14 +62,14 @@ fun HomeApps(
 
                             Spacer(modifier = Modifier.width(JsonSpacing.XS))
 
-                            Text("\"${app.name}\"" , color = JsonSyntax.key)
+                            Text("\"${app.name}\"" , color = JsonSyntax.colors.key)
                             Text(":")
 
                             Spacer(modifier = Modifier.width(JsonSpacing.SM))
 
-                            Text("{" , color = JsonSyntax.parenthesis)
+                            Text("{" , color = JsonSyntax.colors.parenthesis)
                             Text("..")
-                            Text("}", color = JsonSyntax.parenthesis)
+                            Text("}", color = JsonSyntax.colors.parenthesis)
                             Text(",")
                         }
                     }
@@ -91,7 +91,7 @@ fun HomeApps(
 
         if (!state.isCollapsed){
             Row() {
-                Text("}", color = JsonSyntax.parenthesis)
+                Text("}", color = JsonSyntax.colors.parenthesis)
                 Text(",")
             }
         }

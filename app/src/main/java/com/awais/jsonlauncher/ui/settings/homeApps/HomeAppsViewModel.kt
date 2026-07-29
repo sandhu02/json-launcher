@@ -1,6 +1,5 @@
 package com.awais.jsonlauncher.ui.settings.homeApps
 
-import android.R
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.awais.jsonlauncher.models.AppInfo
@@ -83,5 +82,5 @@ class HomeAppsViewModel @Inject constructor(
     init {
         loadApps()
     }
-    
+
 }

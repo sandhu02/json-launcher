@@ -1,6 +1,5 @@
 package com.awais.jsonlauncher.ui.appDrawer
 
-import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.awais.jsonlauncher.models.AppInfo

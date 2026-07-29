@@ -37,16 +37,16 @@ fun JsonItem(
 
             Spacer(modifier = Modifier.width(JsonSpacing.XS))
 
-            Text("\"${name}\"" , color = JsonSyntax.key)
+            Text("\"${name}\"" , color = JsonSyntax.colors.key)
             Text(":")
 
             Spacer(modifier = Modifier.width(JsonSpacing.SM))
 
-            Text("{" , color = JsonSyntax.parenthesis)
+            Text("{" , color = JsonSyntax.colors.parenthesis)
 
             if (isCollapsed) {
                 Text("..")
-                Text("}", color = JsonSyntax.parenthesis)
+                Text("}", color = JsonSyntax.colors.parenthesis)
                 Text(",")
             }
 
@@ -55,26 +55,26 @@ fun JsonItem(
         if (!isCollapsed) {
             properties.forEach {
                 Row(modifier = Modifier.padding(start = JsonSpacing.Indent)) {
-                    Text("\"${it.key}\"", color = JsonSyntax.key)
+                    Text("\"${it.key}\"", color = JsonSyntax.colors.key)
                     Text(":")
 
                     Spacer(modifier = Modifier.width(JsonSpacing.SM))
 
                     when(it.valueType) {
                         "STRING" -> Text(
-                            "\"${it.value}\"", color = JsonSyntax.string,
+                            "\"${it.value}\"", color = JsonSyntax.colors.string,
                             modifier = Modifier.clickable{ it.onValueClick() }
                         )
                         "INTEGER" -> Text(
-                            it.value , color = JsonSyntax.number,
+                            it.value , color = JsonSyntax.colors.number,
                             modifier = Modifier.clickable{ it.onValueClick() }
                         )
                         "BOOLEAN" -> Text(
-                            it.value , color = JsonSyntax.boolean , textDecoration = TextDecoration.Underline,
+                            it.value , color = JsonSyntax.colors.boolean , textDecoration = TextDecoration.Underline,
                             modifier = Modifier.clickable{ it.onValueClick() }
                         )
                         "COMMENT" -> Text(
-                            it.value , color = JsonSyntax.comment , textDecoration = TextDecoration.Underline,
+                            it.value , color = JsonSyntax.colors.comment , textDecoration = TextDecoration.Underline,
                             modifier = Modifier.clickable{ it.onValueClick() }
                         )
                     }
@@ -83,7 +83,7 @@ fun JsonItem(
                 }
             }
             Row() {
-                Text("}", color = JsonSyntax.parenthesis)
+                Text("}", color = JsonSyntax.colors.parenthesis)
                 Text(",")
             }
 

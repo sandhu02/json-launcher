@@ -42,12 +42,12 @@ fun AppsSection(
 
             Spacer(modifier = Modifier.padding(JsonSpacing.XS))
 
-            Text("\"apps\"" , color = JsonSyntax.key)
+            Text("\"apps\"" , color = JsonSyntax.colors.key)
             Text(":")
 
             Spacer(modifier = Modifier.width(JsonSpacing.SM))
 
-            Text("{" , color = JsonSyntax.parenthesis)
+            Text("{" , color = JsonSyntax.colors.parenthesis)
 
             if (state.isLoading){
                 Text("...")
@@ -55,7 +55,7 @@ fun AppsSection(
 
             if (state.isCollapsed) {
                 Text("..")
-                Text("}" , color = JsonSyntax.parenthesis)
+                Text("}" , color = JsonSyntax.colors.parenthesis)
                 Text(",")
             }
         }
@@ -115,7 +115,7 @@ fun AppsSection(
             }
 
             Row() {
-                Text("}", color = JsonSyntax.parenthesis)
+                Text("}", color = JsonSyntax.colors.parenthesis)
                 Text(",")
             }
         }

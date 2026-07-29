@@ -30,16 +30,16 @@ fun AddApps(
 
         Spacer(modifier = Modifier.width(JsonSpacing.XS))
 
-        Text("\"add\"", color = JsonSyntax.boolean)
+        Text("\"add\"", color = JsonSyntax.colors.boolean)
         Text(":")
 
         Spacer(modifier = Modifier.width(JsonSpacing.SM))
 
-        Text("{", color = JsonSyntax.parenthesis)
+        Text("{", color = JsonSyntax.colors.parenthesis)
 
         if (isAddCollapsed) {
             Text("..")
-            Text("}" , color = JsonSyntax.parenthesis)
+            Text("}" , color = JsonSyntax.colors.parenthesis)
             Text(",")
         }
 
@@ -59,14 +59,14 @@ fun AddApps(
 
                     Spacer(modifier = Modifier.width(JsonSpacing.XS))
 
-                    Text("\"${app.name}\"" , color = JsonSyntax.key)
+                    Text("\"${app.name}\"" , color = JsonSyntax.colors.key)
                     Text(":")
 
                     Spacer(modifier = Modifier.width(JsonSpacing.SM))
 
-                    Text("{" , color = JsonSyntax.parenthesis)
+                    Text("{" , color = JsonSyntax.colors.parenthesis)
                     Text("..")
-                    Text("}" , color = JsonSyntax.parenthesis)
+                    Text("}" , color = JsonSyntax.colors.parenthesis)
                     Text(",")
                 }
             }
@@ -75,7 +75,7 @@ fun AddApps(
 
     if (!isAddCollapsed) {
         Row() {
-            Text("}" ,color = JsonSyntax.parenthesis)
+            Text("}" ,color = JsonSyntax.colors.parenthesis)
             Text(",")
         }
     }

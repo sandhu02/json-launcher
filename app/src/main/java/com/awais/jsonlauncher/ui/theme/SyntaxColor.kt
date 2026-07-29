@@ -1,5 +1,6 @@
 package com.awais.jsonlauncher.ui.theme
 
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
 data class SyntaxColors(
@@ -8,14 +9,29 @@ data class SyntaxColors(
     val number: Color,
     val boolean: Color,
     val comment: Color,
-    val parenthesis: Color
+    val parenthesis: Color,
+    val itemParenthesis: Color
+)
+val LocalSyntaxColors = staticCompositionLocalOf<SyntaxColors> {
+    error("No SyntaxColors provided")
+}
+
+val JsonSyntaxDark = SyntaxColors(
+    key = JsonKeyDark,
+    string = JsonStringDark,
+    number = JsonNumberDark,
+    boolean = JsonBooleanDark,
+    comment = JsonCommentDark,
+    parenthesis = JsonParenthesisDark,
+    itemParenthesis = JsonItemParenthesisDark
 )
 
-val JsonSyntax = SyntaxColors(
-    key = JsonKey,
-    string = JsonString,
-    number = JsonNumber,
-    boolean = JsonBoolean,
-    comment = JsonComment,
-    parenthesis = JsonParenthesis
+val jsonSyntaxLight = SyntaxColors(
+    key = JsonKeyLight,
+    string = JsonStringLight,
+    number = JsonNumberLight,
+    boolean = JsonBooleanLight,
+    comment = JsonCommentLight,
+    parenthesis = JsonParenthesisLight,
+    itemParenthesis = JsonItemParenthesisLight
 )

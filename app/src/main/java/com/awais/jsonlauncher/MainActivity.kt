@@ -16,6 +16,10 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.awais.jsonlauncher.ui.JsonLauncher
 import com.awais.jsonlauncher.ui.theme.JsonLauncherTheme
@@ -24,6 +28,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val notificationPermissionRequestCode = 1001
+    private val showNotificationDialog = mutableStateOf(false)
 
     @RequiresApi(Build.VERSION_CODES.BAKLAVA)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +42,11 @@ class MainActivity : ComponentActivity() {
             JsonLauncherTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     JsonLauncher(
-                        modifier = Modifier.padding(innerPadding)
+                        modifier = Modifier.padding(innerPadding),
+                        showNotificationDialog = showNotificationDialog.value,
+                        onDismissNotificationDialog = {
+                            showNotificationDialog.value = false
+                        }
                     )
                 }
             }
@@ -55,25 +64,14 @@ class MainActivity : ComponentActivity() {
             }
         }
 
+
         // Check notification listener access
         if (!isNotificationServiceEnabled()) {
             Log.d("MainActivity", "Notification Service NOT enabled. Opening settings.")
-            showNotificationAccessDialog()
+            showNotificationDialog.value = true
         } else {
             Log.d("MainActivity", "Notification Service is enabled.")
         }
-    }
-
-    private fun showNotificationAccessDialog() {
-        AlertDialog.Builder(this)
-            .setTitle("Enable Notification Access")
-            .setMessage("This app needs notification access to display your notifications. Please enable it in settings.")
-            .setPositiveButton("Open Settings") { _, _ ->
-                val intent = Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
-                startActivity(intent)
-            }
-            .setNegativeButton("Cancel", null)
-            .show()
     }
 
     override fun onResume() {

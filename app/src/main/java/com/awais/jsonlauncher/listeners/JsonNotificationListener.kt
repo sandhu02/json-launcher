@@ -59,6 +59,7 @@ class JsonNotificationListener : NotificationListenerService() {
         super.onListenerDisconnected()
         Log.d("JsonNotificationListener", "Service Disconnected")
         repository.setServiceConnected(false)
+        repository.setNotifications(emptyList())
     }
 
     override fun onNotificationPosted(sbn: StatusBarNotification) {
@@ -70,6 +71,6 @@ class JsonNotificationListener : NotificationListenerService() {
     }
 
     override fun onNotificationRemoved(sbn: StatusBarNotification) {
-        repository.removeNotification(sbn.packageName, sbn.postTime)
+        repository.removeNotification(sbn.key)
     }
 }

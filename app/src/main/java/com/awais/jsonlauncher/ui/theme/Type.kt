@@ -1,5 +1,6 @@
 package com.awais.jsonlauncher.ui.theme
 
+import androidx.compose.material3.Text
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -16,6 +17,14 @@ val JetBrainsMono = FontFamily(
 )
 
 val Typography = Typography(
+
+    titleLarge = TextStyle(
+        fontFamily = JetBrainsMono,
+        fontWeight = FontWeight.Medium,
+        fontSize = 22.sp,
+        lineHeight = 28.sp,
+        letterSpacing = 0.sp
+    ),
 
     displayLarge = TextStyle(
         fontFamily = JetBrainsMono,
@@ -52,6 +61,14 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp,
         lineHeight = 18.sp
+    ),
+
+    labelLarge = TextStyle(
+        fontFamily = JetBrainsMono,
+        fontWeight = FontWeight.Medium,
+        fontSize = 14.sp,
+        lineHeight = 20.sp,
+        letterSpacing = 0.1.sp
     ),
 
     labelMedium = TextStyle(

@@ -30,15 +30,15 @@ class NotificationRepository @Inject constructor() {
     fun addNotification(notification: NotificationInfo) {
         _notifications.update { current ->
             // Add new at the top, remove duplicates
-            listOf(notification) + current.filter {
-                !(it.packageName == notification.packageName && it.postTime == notification.postTime)
+            listOf(notification) + current.filterNot {
+                it.key == notification.key
             }
         }
     }
 
-    fun removeNotification(packageName: String, postTime: Long) {
+    fun removeNotification(key: String) {
         _notifications.update {
-            it.filterNot { n -> n.packageName == packageName && n.postTime == postTime }
+            it.filterNot { n -> n.key == key }
         }
     }
 }

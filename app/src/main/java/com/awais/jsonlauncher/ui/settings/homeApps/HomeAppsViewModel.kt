@@ -53,9 +53,13 @@ class HomeAppsViewModel @Inject constructor(
                     apps.find { it.packageName == packageName }
                 }
 
+                val filteredApps = apps.filter { app ->
+                    app.packageName !in pinnedPackages
+                }
+
                 _uiState.update {
                     it.copy(
-                        apps = apps,
+                        apps = filteredApps,
                         pinnedApps = pinned,
                         isLoading = false
                     )

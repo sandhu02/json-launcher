@@ -59,13 +59,10 @@ class AppDrawerScreenViewModel @Inject constructor(
 
         viewModelScope.launch(Dispatchers.IO) {
 
-            val apps = repository.getInstalledApps()
-
-            _uiState.update {
-                it.copy(
-                    apps = apps,
-                    isLoading = false
-                )
+            repository.apps.collect { apps ->
+                _uiState.update {
+                    it.copy(apps = apps)
+                }
             }
         }
     }
@@ -76,8 +73,13 @@ class AppDrawerScreenViewModel @Inject constructor(
         }
     }
 
-
     init {
+        repository.registerReceiver()
+        repository.refreshApps()
         loadApps()
+    }
+
+    override fun onCleared() {
+        repository.unregisterReceiver()
     }
 }

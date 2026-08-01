@@ -1,13 +1,18 @@
 package com.awais.jsonlauncher.repositories
 
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.LauncherApps
 import android.os.Build
 import android.os.Process
 import androidx.annotation.RequiresApi
 import com.awais.jsonlauncher.models.AppInfo
 import com.awais.jsonlauncher.models.AppShortcut
+import com.awais.jsonlauncher.receivers.PackageChangeReceiver
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -16,6 +21,14 @@ import javax.inject.Singleton
 class AppsRepository @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
+    private val _apps = MutableStateFlow<List<AppInfo>>(emptyList())
+    val apps = _apps.asStateFlow()
+
+    private val receiver = PackageChangeReceiver {
+        refreshApps()
+    }
+
+    private var isRegistered = false
 
     private var cachedApps: List<AppInfo>? = null
 
@@ -45,6 +58,10 @@ class AppsRepository @Inject constructor(
         return cachedApps!!
     }
 
+    fun refreshApps() {
+        cachedApps = null
+        _apps.value = getInstalledApps()
+    }
 
     @RequiresApi(Build.VERSION_CODES.N_MR1)
     private fun getAppShortcuts(
@@ -104,4 +121,28 @@ class AppsRepository @Inject constructor(
             Process.myUserHandle()
         )
     }
+
+
+    fun registerReceiver() {
+        if (isRegistered) return
+
+        val filter = IntentFilter().apply {
+            addAction(Intent.ACTION_PACKAGE_ADDED)
+            addAction(Intent.ACTION_PACKAGE_REMOVED)
+            addAction(Intent.ACTION_PACKAGE_CHANGED)
+            addAction(Intent.ACTION_PACKAGE_REPLACED)
+            addDataScheme("package")
+        }
+
+        context.registerReceiver(receiver, filter)
+        isRegistered = true
+    }
+
+    fun unregisterReceiver() {
+        if (!isRegistered) return
+
+        context.unregisterReceiver(receiver)
+        isRegistered = false
+    }
+
 }

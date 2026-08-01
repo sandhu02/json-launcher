@@ -4,10 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.awais.jsonlauncher.models.AppInfo
 import com.awais.jsonlauncher.repositories.AppsRepository
+import com.awais.jsonlauncher.repositories.SettingsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -24,7 +26,8 @@ data class HomeAppsUiState(
 
 @HiltViewModel
 class HomeAppsViewModel @Inject constructor(
-    private val repository: AppsRepository
+    private val appsRepository: AppsRepository,
+    private val settingsRepository: SettingsRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(HomeAppsUiState())
     val uiState = _uiState.asStateFlow()
@@ -38,46 +41,52 @@ class HomeAppsViewModel @Inject constructor(
     }
 
     private fun loadApps() {
+        viewModelScope.launch {
+            combine(
+                settingsRepository.pinnedApps,
+                appsRepository.apps
+            ) { pinnedPackages, apps ->
+                apps to pinnedPackages
+            }.collect { (apps, pinnedPackages) ->
 
-        viewModelScope.launch(Dispatchers.IO) {
-            _uiState.update { it.copy(isLoading = true) }
+                val pinned = pinnedPackages.mapNotNull { packageName ->
+                    apps.find { it.packageName == packageName }
+                }
 
-            val apps = repository.getInstalledApps()
-
-            val pinned = getPinnedPackages().mapNotNull { packageName ->
-                apps.find { it.packageName == packageName }
+                _uiState.update {
+                    it.copy(
+                        apps = apps,
+                        pinnedApps = pinned,
+                        isLoading = false
+                    )
+                }
             }
+        }
 
-            _uiState.update {
-                it.copy(
-                    apps = apps,
-                    pinnedApps = pinned,
-                    isLoading = false
-                )
+        appsRepository.refreshApps()
+    }
+
+    fun addToHomeApps(packageName : String) {
+        viewModelScope.launch {
+
+            val pinned = settingsRepository.pinnedApps.first().toMutableList()
+
+            if (packageName !in pinned) {
+                pinned.add(packageName)
+                settingsRepository.savePinnedApps(pinned)
             }
         }
     }
 
-    fun addToHomeApps(packageName : String) {
-        pinnedPackages.add(packageName)
-        loadApps()
-    }
-
     fun removeFromHomeApps(packageName: String) {
-        pinnedPackages.remove(packageName)
-        loadApps()
-    }
+        viewModelScope.launch {
 
-    private fun getPinnedPackages() : List<String> {
-        return pinnedPackages
-    }
+            val pinned = settingsRepository.pinnedApps.first().toMutableList()
 
-    private var pinnedPackages = mutableListOf<String>(
-        "com.google.android.dialer",
-        "com.google.android.apps.messaging",
-        "com.whatsapp",
-        "com.google.android.GoogleCamera"
-    )
+            pinned.remove(packageName)
+            settingsRepository.savePinnedApps(pinned)
+        }
+    }
 
     init {
         loadApps()

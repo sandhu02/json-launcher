@@ -61,11 +61,5 @@ fun LauncherSettings(
             }
         }
 
-
-
-
-
-
-
     }
 }

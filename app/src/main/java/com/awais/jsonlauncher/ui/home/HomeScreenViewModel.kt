@@ -25,22 +25,4 @@ class HomeScreenViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(HomeScreenUiState())
     val uiState = _uiState.asStateFlow()
 
-    init {
-        loadApps()
-    }
-
-    private fun loadApps() {
-
-        viewModelScope.launch(Dispatchers.IO) {
-
-            val apps = repository.getInstalledApps()
-
-            _uiState.update {
-                it.copy(
-                    apps = apps,
-                    isLoading = false
-                )
-            }
-        }
-    }
 }

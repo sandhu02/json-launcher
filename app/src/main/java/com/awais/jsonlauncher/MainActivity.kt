@@ -1,8 +1,7 @@
 package com.awais.jsonlauncher
 
-import android.app.AlertDialog
+import android.app.role.RoleManager
 import android.content.ComponentName
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -12,14 +11,12 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.awais.jsonlauncher.ui.JsonLauncher
 import com.awais.jsonlauncher.ui.theme.JsonLauncherTheme
@@ -30,10 +27,22 @@ class MainActivity : ComponentActivity() {
     private val notificationPermissionRequestCode = 1001
     private val showNotificationDialog = mutableStateOf(false)
 
+    private val showSetAsDefaultDialog = mutableStateOf(false)
+
+    private val requestHomeRoleLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            // User returned from the system dialog.
+            // Re-check whether we're now the default launcher.
+            checkAndSetAsDefaultLauncher()
+        }
+
     @RequiresApi(Build.VERSION_CODES.BAKLAVA)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        // Check and request default launcher
+        checkAndSetAsDefaultLauncher()
 
         // Check and request notification permission
         checkAndRequestNotificationPermission()
@@ -46,10 +55,45 @@ class MainActivity : ComponentActivity() {
                         showNotificationDialog = showNotificationDialog.value,
                         onDismissNotificationDialog = {
                             showNotificationDialog.value = false
+                        },
+                        showSetAsDefaultDialog = showSetAsDefaultDialog.value,
+                        onDismissSetAsDefaultDialog = {
+                            showSetAsDefaultDialog.value = false
+                        },
+                        onOpenSetAsDefault = {
+                            requestHomeRole()
                         }
                     )
                 }
             }
+        }
+    }
+
+    private fun checkAndSetAsDefaultLauncher() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val roleManager = getSystemService(RoleManager::class.java)
+
+            // Already the default launcher
+            if (roleManager.isRoleHeld(RoleManager.ROLE_HOME)) {
+                showSetAsDefaultDialog.value = false
+                return
+            }
+
+            // Not the default launcher
+            showSetAsDefaultDialog.value = true
+        }
+    }
+
+    fun requestHomeRole() {
+        val roleManager = getSystemService(RoleManager::class.java)
+
+        if (
+            roleManager.isRoleAvailable(RoleManager.ROLE_HOME) &&
+            !roleManager.isRoleHeld(RoleManager.ROLE_HOME)
+        ) {
+            requestHomeRoleLauncher.launch(
+                roleManager.createRequestRoleIntent(RoleManager.ROLE_HOME)
+            )
         }
     }
 
@@ -71,15 +115,6 @@ class MainActivity : ComponentActivity() {
             showNotificationDialog.value = true
         } else {
             Log.d("MainActivity", "Notification Service is enabled.")
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        // Check if notification access was granted while app was in background
-        if (isNotificationServiceEnabled()) {
-            Log.d("MainActivity", "Notification Service is now enabled")
-            // Optionally trigger a refresh
         }
     }
 

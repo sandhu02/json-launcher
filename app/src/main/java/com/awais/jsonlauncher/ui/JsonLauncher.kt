@@ -1,6 +1,7 @@
 package com.awais.jsonlauncher.ui
 
 import android.content.Intent
+import android.os.Build
 import android.provider.Settings
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.foundation.layout.Box
@@ -17,8 +18,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.awais.jsonlauncher.dialogs.NotificationAccessDialog
 import com.awais.jsonlauncher.ui.appDrawer.AppDrawerScreen
+import com.awais.jsonlauncher.ui.dialogs.NotificationAccessDialog
+import com.awais.jsonlauncher.ui.dialogs.SetAsDefaultDialog
 import com.awais.jsonlauncher.ui.home.HomeScreen
 import com.awais.jsonlauncher.ui.settings.LauncherSettings
 import kotlin.math.absoluteValue
@@ -34,9 +36,25 @@ fun JsonLauncher(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
     showNotificationDialog: Boolean,
-    onDismissNotificationDialog: () -> Unit
+    onDismissNotificationDialog: () -> Unit,
+    showSetAsDefaultDialog: Boolean,
+    onDismissSetAsDefaultDialog: () -> Unit,
+    onOpenSetAsDefault: () -> Unit,
 ) {
     val context = LocalContext.current
+
+    if (showSetAsDefaultDialog) {
+        SetAsDefaultDialog(
+            onDismiss = onDismissSetAsDefaultDialog,
+            onOpenSettings = {
+                onDismissSetAsDefaultDialog()
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    onOpenSetAsDefault()
+                }
+            }
+        )
+    }
 
     if (showNotificationDialog) {
         NotificationAccessDialog(
@@ -49,6 +67,7 @@ fun JsonLauncher(
             }
         )
     }
+
 
     NavHost(
         navController = navController,
@@ -71,14 +90,16 @@ fun JsonLauncher(
                         ).absoluteValue
 
                 Box(
-                    modifier = Modifier.padding(4.dp)
-                        .fillMaxSize().graphicsLayer {
-                        alpha = 1f - pageOffset.coerceIn(0f, 1f) * 0.3f
+                    modifier = Modifier
+                        .padding(4.dp)
+                        .fillMaxSize()
+                        .graphicsLayer {
+                            alpha = 1f - pageOffset.coerceIn(0f, 1f) * 0.3f
 
-                        val scale = 1f - pageOffset.coerceIn(0f, 1f) * 0.08f
-                        scaleX = scale
-                        scaleY = scale
-                    }
+                            val scale = 1f - pageOffset.coerceIn(0f, 1f) * 0.08f
+                            scaleX = scale
+                            scaleY = scale
+                        }
                 ) {
                     when (page) {
                         0 -> HomeScreen(navController = navController)

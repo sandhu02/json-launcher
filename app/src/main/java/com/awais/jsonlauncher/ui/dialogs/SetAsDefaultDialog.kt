@@ -1,5 +1,6 @@
-package com.awais.jsonlauncher.dialogs
+package com.awais.jsonlauncher.ui.dialogs
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,9 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -19,9 +19,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.awais.jsonlauncher.ui.theme.JsonSyntax
 
 @Composable
-fun NotificationAccessDialog(
+fun SetAsDefaultDialog(
     onDismiss: () -> Unit,
     onOpenSettings: () -> Unit
 ) {
@@ -29,7 +30,7 @@ fun NotificationAccessDialog(
         onDismissRequest = onDismiss
     ) {
         Surface(
-            shape = RoundedCornerShape(20.dp),
+//            shape = RoundedCornerShape(20.dp),
             tonalElevation = 8.dp,
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -38,14 +39,16 @@ fun NotificationAccessDialog(
             ) {
 
                 Text(
-                    text = "Enable Notification Access",
-                    style = MaterialTheme.typography.titleLarge
+                    text = "\"Set as Default Launcher\"",
+                    style = MaterialTheme.typography.titleLarge,
+                    color = JsonSyntax.colors.key
                 )
 
                 Spacer(Modifier.height(12.dp))
 
                 Text(
-                    text = "Please enable notification access in Settings."
+                    text = "/* Set Json Launcher as your default Home Screen Launcher */",
+                    color = JsonSyntax.colors.comment
                 )
 
                 Spacer(Modifier.height(24.dp))
@@ -62,7 +65,8 @@ fun NotificationAccessDialog(
 
                     Spacer(Modifier.width(8.dp))
 
-                    Button(
+                    OutlinedButton(
+                        border = BorderStroke(1.dp, color = JsonSyntax.colors.parenthesis),
                         onClick = onOpenSettings
                     ) {
                         Text("Open Settings")
@@ -75,8 +79,8 @@ fun NotificationAccessDialog(
 
 @Preview
 @Composable
-fun NotificationPreview() {
-    NotificationAccessDialog(
+fun SetDefaultPreview() {
+    SetAsDefaultDialog(
         {},{}
     )
 }

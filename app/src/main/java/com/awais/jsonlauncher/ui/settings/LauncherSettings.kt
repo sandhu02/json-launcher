@@ -13,6 +13,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.awais.jsonlauncher.ui.settings.defaultLauncher.DefaultLauncherSection
 import com.awais.jsonlauncher.ui.settings.homeApps.HomeApps
 import com.awais.jsonlauncher.ui.theme.JsonSpacing
 import com.awais.jsonlauncher.ui.theme.JsonSyntax
@@ -48,6 +49,9 @@ fun LauncherSettings(
                     Text("{", color = JsonSyntax.colors.parenthesis)
                 }
 
+            }
+            item {
+                DefaultLauncherSection()
             }
             item {
                 HomeApps()

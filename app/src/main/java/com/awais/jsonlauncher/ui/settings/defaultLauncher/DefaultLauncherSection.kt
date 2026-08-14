@@ -27,7 +27,7 @@ import com.awais.jsonlauncher.ui.theme.JsonSyntax
 
 @Composable
 fun DefaultLauncherSection(
-    viewModel: AppsSectionViewModel = hiltViewModel(),
+    viewModel: DefaultLauncherSectionViewModel = hiltViewModel(),
 ) {
     val state by viewModel.uiState.collectAsState()
 
@@ -61,7 +61,8 @@ fun DefaultLauncherSection(
         modifier = Modifier.padding(start = JsonSpacing.Indent),
     ) {
         Row {
-            Text (if (state.isCollapsed) ">" else "⌄" ,
+            Text (
+                text = if (state.isCollapsed) ">" else "⌄" ,
                 modifier = Modifier.clickable {
                     viewModel.onCollapseClick()
                 }

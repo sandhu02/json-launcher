@@ -1,4 +1,4 @@
-package com.awais.jsonlauncher.ui
+package com.awais.jsonlauncher.navigation
 
 import android.content.Intent
 import android.os.Build
@@ -32,7 +32,7 @@ enum class JsonLauncherAppScreens(val title : String) {
 
 
 @Composable
-fun JsonLauncher(
+fun JsonLauncherNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
     showNotificationDialog: Boolean,

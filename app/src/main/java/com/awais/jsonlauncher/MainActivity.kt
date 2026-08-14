@@ -18,9 +18,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
-import com.awais.jsonlauncher.ui.JsonLauncher
+import com.awais.jsonlauncher.navigation.JsonLauncherNavHost
+import com.awais.jsonlauncher.repositories.SettingsRepository
 import com.awais.jsonlauncher.ui.theme.JsonLauncherTheme
 import dagger.hilt.android.AndroidEntryPoint
+import jakarta.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -36,6 +38,9 @@ class MainActivity : ComponentActivity() {
             checkAndSetAsDefaultLauncher()
         }
 
+    @Inject
+    lateinit var settingsRepository: SettingsRepository
+
     @RequiresApi(Build.VERSION_CODES.BAKLAVA)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,24 +53,20 @@ class MainActivity : ComponentActivity() {
         checkAndRequestNotificationPermission()
 
         setContent {
-            JsonLauncherTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    JsonLauncher(
-                        modifier = Modifier.padding(innerPadding),
-                        showNotificationDialog = showNotificationDialog.value,
-                        onDismissNotificationDialog = {
-                            showNotificationDialog.value = false
-                        },
-                        showSetAsDefaultDialog = showSetAsDefaultDialog.value,
-                        onDismissSetAsDefaultDialog = {
-                            showSetAsDefaultDialog.value = false
-                        },
-                        onOpenSetAsDefault = {
-                            requestHomeRole()
-                        }
-                    )
+            SetJsonLauncherTheme(
+                settingsRepository = settingsRepository,
+                showNotificationDialog = showNotificationDialog.value,
+                onDismissNotificationDialog = {
+                    showNotificationDialog.value = false
+                },
+                showSetAsDefaultDialog = showSetAsDefaultDialog.value,
+                onDismissSetAsDefaultDialog = {
+                    showSetAsDefaultDialog.value = false
+                },
+                onOpenSetAsDefault = {
+                    requestHomeRole()
                 }
-            }
+            )
         }
     }
 

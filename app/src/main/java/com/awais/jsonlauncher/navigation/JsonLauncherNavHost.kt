@@ -18,11 +18,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.awais.jsonlauncher.ui.appDrawer.AppDrawerScreen
+import com.awais.jsonlauncher.ui.screens.appDrawer.AppDrawerScreen
 import com.awais.jsonlauncher.ui.dialogs.NotificationAccessDialog
 import com.awais.jsonlauncher.ui.dialogs.SetAsDefaultDialog
-import com.awais.jsonlauncher.ui.home.HomeScreen
-import com.awais.jsonlauncher.ui.settings.LauncherSettings
+import com.awais.jsonlauncher.ui.screens.home.HomeScreen
+import com.awais.jsonlauncher.ui.screens.settings.LauncherSettings
 import kotlin.math.absoluteValue
 
 enum class JsonLauncherAppScreens(val title : String) {

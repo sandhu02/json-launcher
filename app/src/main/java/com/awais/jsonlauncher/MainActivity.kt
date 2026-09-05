@@ -4,7 +4,6 @@ import android.app.role.RoleManager
 import android.content.ComponentName
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
@@ -16,17 +15,11 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.Modifier
-import com.awais.jsonlauncher.navigation.JsonLauncherNavHost
+import androidx.core.graphics.drawable.toDrawable
 import com.awais.jsonlauncher.repositories.SettingsRepository
-import com.awais.jsonlauncher.ui.theme.JsonLauncherTheme
 import dagger.hilt.android.AndroidEntryPoint
 import jakarta.inject.Inject
-import androidx.core.graphics.drawable.toDrawable
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

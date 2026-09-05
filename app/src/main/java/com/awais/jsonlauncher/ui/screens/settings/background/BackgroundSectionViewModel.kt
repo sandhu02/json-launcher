@@ -3,7 +3,6 @@ package com.awais.jsonlauncher.ui.screens.settings.background
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.awais.jsonlauncher.models.BackgroundMode
-import com.awais.jsonlauncher.models.ThemeMode
 import com.awais.jsonlauncher.repositories.SettingsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -2,7 +2,6 @@ package com.awais.jsonlauncher.ui.components
 
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.LocalTextStyle
@@ -10,7 +9,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
-import com.awais.jsonlauncher.ui.theme.JsonSpacing
 import com.awais.jsonlauncher.ui.theme.JsonSyntax
 
 @Composable

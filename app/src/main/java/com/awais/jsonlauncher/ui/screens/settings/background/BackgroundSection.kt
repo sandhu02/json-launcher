@@ -18,7 +18,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.awais.jsonlauncher.models.BackgroundMode
-import com.awais.jsonlauncher.models.ThemeMode
 import com.awais.jsonlauncher.ui.theme.JsonSpacing
 import com.awais.jsonlauncher.ui.theme.JsonSyntax
 

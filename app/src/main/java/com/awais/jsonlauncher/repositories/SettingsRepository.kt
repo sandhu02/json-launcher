@@ -5,6 +5,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.awais.jsonlauncher.models.BackgroundMode
 import com.awais.jsonlauncher.models.ThemeMode
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
@@ -26,6 +27,7 @@ class SettingsRepository @Inject constructor(
     companion object {
         private val PINNED_APPS = stringSetPreferencesKey("pinned_apps")
         private val THEME_MODE = stringPreferencesKey("theme_mode")
+        private val BACKGROUND_MODE = stringPreferencesKey("background_mode")
     }
 
     val pinnedApps: Flow<List<String>> =
@@ -57,6 +59,15 @@ class SettingsRepository @Inject constructor(
             }
         }
 
+    val backgroundMode: Flow<BackgroundMode> =
+        context.dataStore.data.map { preferences ->
+            when (preferences[BACKGROUND_MODE]) {
+                "default" -> BackgroundMode.DEFAULT
+                "wallpaper" -> BackgroundMode.WALLPAPER
+                else -> BackgroundMode.DEFAULT
+            }
+        }
+
     suspend fun setThemeMode(themeMode: ThemeMode) {
         context.dataStore.edit { preferences ->
             preferences[THEME_MODE] = when (themeMode) {
@@ -66,4 +77,15 @@ class SettingsRepository @Inject constructor(
             }
         }
     }
+
+    suspend fun setBackgroundMode(backgroundMode: BackgroundMode) {
+        context.dataStore.edit { preferences ->
+            preferences[BACKGROUND_MODE] = when (backgroundMode) {
+                BackgroundMode.DEFAULT -> "default"
+                BackgroundMode.WALLPAPER -> "wallpaper"
+            }
+        }
+    }
+
+
 }

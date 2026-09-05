@@ -6,7 +6,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.awais.jsonlauncher.models.BackgroundMode
 import com.awais.jsonlauncher.models.ThemeMode
 import com.awais.jsonlauncher.navigation.JsonLauncherNavHost
 import com.awais.jsonlauncher.repositories.SettingsRepository
@@ -27,11 +29,19 @@ fun SetJsonLauncherTheme(
             initialValue = ThemeMode.SYSTEM
         )
 
+    val backgroundMode by settingsRepository.backgroundMode
+        .collectAsStateWithLifecycle(
+            initialValue = BackgroundMode.DEFAULT
+        )
+
     JsonLauncherTheme(
         themeMode = themeMode,
     ) {
         // Json Launcher UI
-        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            containerColor = Color.Transparent
+        ) { innerPadding ->
             JsonLauncherNavHost(
                 modifier = Modifier.padding(innerPadding),
                 showNotificationDialog = showNotificationDialog,
@@ -39,6 +49,7 @@ fun SetJsonLauncherTheme(
                 showSetAsDefaultDialog = showSetAsDefaultDialog,
                 onDismissSetAsDefaultDialog = onDismissSetAsDefaultDialog,
                 onOpenSetAsDefault = onOpenSetAsDefault,
+                backgroundMode = backgroundMode
             )
         }
     }

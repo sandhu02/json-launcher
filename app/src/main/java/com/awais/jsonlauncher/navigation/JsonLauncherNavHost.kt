@@ -4,12 +4,15 @@ import android.content.Intent
 import android.os.Build
 import android.provider.Settings
 import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
@@ -18,9 +21,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.awais.jsonlauncher.ui.screens.appDrawer.AppDrawerScreen
+import com.awais.jsonlauncher.models.BackgroundMode
 import com.awais.jsonlauncher.ui.dialogs.NotificationAccessDialog
 import com.awais.jsonlauncher.ui.dialogs.SetAsDefaultDialog
+import com.awais.jsonlauncher.ui.screens.appDrawer.AppDrawerScreen
 import com.awais.jsonlauncher.ui.screens.home.HomeScreen
 import com.awais.jsonlauncher.ui.screens.settings.LauncherSettings
 import kotlin.math.absoluteValue
@@ -40,6 +44,7 @@ fun JsonLauncherNavHost(
     showSetAsDefaultDialog: Boolean,
     onDismissSetAsDefaultDialog: () -> Unit,
     onOpenSetAsDefault: () -> Unit,
+    backgroundMode: BackgroundMode
 ) {
     val context = LocalContext.current
 
@@ -69,75 +74,87 @@ fun JsonLauncherNavHost(
     }
 
 
-    NavHost(
-        navController = navController,
-        startDestination = JsonLauncherAppScreens.MainScreen.name,
-    ){
-        composable(route = JsonLauncherAppScreens.MainScreen.name) {
+    Box (
+        Modifier
+            .fillMaxSize()
+            .background(
+                color = if (backgroundMode == BackgroundMode.WALLPAPER) {
+                    MaterialTheme.colorScheme.background.copy(alpha = 0.5f)
+                } else {
+                    MaterialTheme.colorScheme.background
+                }
+            )
+    ) {
 
-            val pagerState = rememberPagerState(
-                initialPage = 0
-            ) { 2 }
+        NavHost(
+            navController = navController,
+            startDestination = JsonLauncherAppScreens.MainScreen.name,
+        ) {
+            composable(route = JsonLauncherAppScreens.MainScreen.name) {
 
-            HorizontalPager(
-                state = pagerState,
-                beyondViewportPageCount = 1,
-                modifier = modifier
-            ) { page ->
+                val pagerState = rememberPagerState(
+                    initialPage = 0
+                ) { 2 }
 
-                val pageOffset = (
-                        (pagerState.currentPage - page) + pagerState.currentPageOffsetFraction
-                        ).absoluteValue
+                HorizontalPager(
+                    state = pagerState,
+                    beyondViewportPageCount = 1,
+                    modifier = modifier
+                ) { page ->
 
-                Box(
-                    modifier = Modifier
-                        .padding(4.dp)
-                        .fillMaxSize()
-                        .graphicsLayer {
-                            alpha = 1f - pageOffset.coerceIn(0f, 1f) * 0.3f
+                    val pageOffset = (
+                            (pagerState.currentPage - page) + pagerState.currentPageOffsetFraction
+                            ).absoluteValue
 
-                            val scale = 1f - pageOffset.coerceIn(0f, 1f) * 0.08f
-                            scaleX = scale
-                            scaleY = scale
+                    Box(
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .fillMaxSize()
+                            .graphicsLayer {
+                                alpha = 1f - pageOffset.coerceIn(0f, 1f) * 0.3f
+
+                                val scale = 1f - pageOffset.coerceIn(0f, 1f) * 0.08f
+                                scaleX = scale
+                                scaleY = scale
+                            }
+                    ) {
+                        when (page) {
+                            0 -> HomeScreen(navController = navController)
+                            1 -> AppDrawerScreen(navController = navController)
                         }
-                ) {
-                    when (page) {
-                        0 -> HomeScreen(navController = navController)
-                        1 -> AppDrawerScreen(navController = navController)
                     }
                 }
             }
-        }
 
-        composable(
-            route = JsonLauncherAppScreens.SettingsScreen.name,
-            enterTransition = {
-                slideIntoContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Left
-                )
-            },
-            exitTransition = {
-                slideOutOfContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Right
-                )
-            },
-            popEnterTransition = {
-                slideIntoContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Left
-                )
-            },
-            popExitTransition = {
-                slideOutOfContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Right
+            composable(
+                route = JsonLauncherAppScreens.SettingsScreen.name,
+                enterTransition = {
+                    slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Left
+                    )
+                },
+                exitTransition = {
+                    slideOutOfContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Right
+                    )
+                },
+                popEnterTransition = {
+                    slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Left
+                    )
+                },
+                popExitTransition = {
+                    slideOutOfContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Right
+                    )
+                }
+            ) {
+                LauncherSettings(
+                    modifier = modifier,
+                    navController = navController
                 )
             }
-        ) {
-            LauncherSettings(
-                modifier = modifier,
-                navController = navController
-            )
         }
     }
-
 
 }

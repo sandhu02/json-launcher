@@ -13,6 +13,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.awais.jsonlauncher.ui.screens.settings.background.BackgroundSection
 import com.awais.jsonlauncher.ui.screens.settings.colorTheme.ColorTheme
 import com.awais.jsonlauncher.ui.screens.settings.defaultLauncher.DefaultLauncherSection
 import com.awais.jsonlauncher.ui.screens.settings.homeApps.HomeApps
@@ -59,6 +60,9 @@ fun LauncherSettings(
             }
             item {
                 ColorTheme()
+            }
+            item {
+                BackgroundSection()
             }
 
             item {

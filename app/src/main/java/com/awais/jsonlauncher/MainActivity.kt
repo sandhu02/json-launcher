@@ -3,11 +3,14 @@ package com.awais.jsonlauncher
 import android.app.role.RoleManager
 import android.content.ComponentName
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.text.TextUtils
 import android.util.Log
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -23,6 +26,7 @@ import com.awais.jsonlauncher.repositories.SettingsRepository
 import com.awais.jsonlauncher.ui.theme.JsonLauncherTheme
 import dagger.hilt.android.AndroidEntryPoint
 import jakarta.inject.Inject
+import androidx.core.graphics.drawable.toDrawable
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -51,6 +55,11 @@ class MainActivity : ComponentActivity() {
 
         // Check and request notification permission
         checkAndRequestNotificationPermission()
+
+        window.addFlags(
+            WindowManager.LayoutParams.FLAG_SHOW_WALLPAPER
+        )
+        window.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
 
         setContent {
             SetJsonLauncherTheme(

@@ -21,8 +21,8 @@ configure<ApplicationExtension> {
         applicationId = "com.awais.jsonlauncher"
         minSdk = 24
         targetSdk = 36
-        versionCode = 10
-        versionName = "1.6.0"
+        versionCode = 11
+        versionName = "1.6.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -34,6 +34,11 @@ configure<ApplicationExtension> {
 
             // Enables resource shrinking.
             isShrinkResources = true
+
+            ndk {
+                debugSymbolLevel = "FULL"
+            }
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

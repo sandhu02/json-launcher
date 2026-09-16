@@ -11,8 +11,12 @@ import com.awais.jsonlauncher.models.AppInfo
 import com.awais.jsonlauncher.models.AppShortcut
 import com.awais.jsonlauncher.receivers.PackageChangeReceiver
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -21,6 +25,8 @@ import javax.inject.Singleton
 class AppsRepository @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+
     private val _apps = MutableStateFlow<List<AppInfo>>(emptyList())
     val apps = _apps.asStateFlow()
 
@@ -43,6 +49,7 @@ class AppsRepository @Inject constructor(
 
         cachedApps = launcherApps
             .getActivityList(null, Process.myUserHandle())
+            .distinctBy { it.applicationInfo.packageName }
             .sortedBy { it.label.toString() }
             .map {
                 AppInfo(
@@ -59,8 +66,15 @@ class AppsRepository @Inject constructor(
     }
 
     fun refreshApps() {
-        cachedApps = null
-        _apps.value = getInstalledApps()
+        scope.launch {
+            cachedApps = null
+            val apps = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+                getInstalledApps()
+            } else {
+                emptyList()
+            }
+            _apps.value = apps
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.N_MR1)

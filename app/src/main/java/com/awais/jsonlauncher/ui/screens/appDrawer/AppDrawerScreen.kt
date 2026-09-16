@@ -159,19 +159,26 @@ fun AppDrawerScreen(
                 val targetIndex = filteredApps.indexOfFirst { app ->
                     app.name.firstOrNull()?.uppercaseChar()?.let { it >= letter } == true
                 }
-                if (targetIndex != -1) {
-                    coroutineScope.launch {
-                        listState.scrollToItem(targetIndex + 1)
+                val totalItems = listState.layoutInfo.totalItemsCount
+                if (totalItems > 0) {
+                    val index = if (targetIndex != -1) {
+                        (targetIndex + 1).coerceIn(0, totalItems - 1)
+                    } else if (filteredApps.isNotEmpty()) {
+                        filteredApps.size.coerceIn(0, totalItems - 1)
+                    } else {
+                        0
                     }
-                } else if (filteredApps.isNotEmpty()) {
                     coroutineScope.launch {
-                        listState.scrollToItem(filteredApps.size)
+                        listState.scrollToItem(index)
                     }
                 }
             },
             onTopSelected = {
-                coroutineScope.launch {
-                    listState.scrollToItem(0)
+                val totalItems = listState.layoutInfo.totalItemsCount
+                if (totalItems > 0) {
+                    coroutineScope.launch {
+                        listState.scrollToItem(0)
+                    }
                 }
             }
         )

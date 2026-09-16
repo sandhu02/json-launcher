@@ -21,8 +21,8 @@ configure<ApplicationExtension> {
         applicationId = "com.awais.jsonlauncher"
         minSdk = 24
         targetSdk = 36
-        versionCode = 12
-        versionName = "1.6.2"
+        versionCode = 13
+        versionName = "1.6.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

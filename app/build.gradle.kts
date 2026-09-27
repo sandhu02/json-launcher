@@ -90,4 +90,7 @@ dependencies {
 
     //Datastore
     implementation("androidx.datastore:datastore-preferences:1.1.7")
+
+    //Billing
+    implementation("com.android.billingclient:billing-ktx:9.1.0")
 }

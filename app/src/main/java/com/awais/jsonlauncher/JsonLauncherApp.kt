@@ -7,6 +7,9 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import com.awais.jsonlauncher.listeners.JsonNotificationListener
+import com.revenuecat.purchases.LogLevel
+import com.revenuecat.purchases.Purchases
+import com.revenuecat.purchases.PurchasesConfiguration
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
@@ -17,6 +20,18 @@ class JsonLauncherApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+        if (BuildConfig.REVENUECAT_API_KEY.isNotBlank()) {
+            Purchases.logLevel = LogLevel.DEBUG
+            Purchases.configure(
+                PurchasesConfiguration.Builder(
+                    this,
+                    BuildConfig.REVENUECAT_API_KEY
+                ).build()
+            )
+        } else {
+            Log.w(TAG, "RevenueCat API key is missing. Skipping Purchases configuration.")
+        }
 
         // Register for app lifecycle callbacks to handle service state
         registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {

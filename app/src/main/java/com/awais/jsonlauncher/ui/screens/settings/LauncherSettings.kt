@@ -16,6 +16,7 @@ import androidx.navigation.NavHostController
 import com.awais.jsonlauncher.ui.screens.settings.background.BackgroundSection
 import com.awais.jsonlauncher.ui.screens.settings.colorTheme.ColorTheme
 import com.awais.jsonlauncher.ui.screens.settings.defaultLauncher.DefaultLauncherSection
+import com.awais.jsonlauncher.ui.screens.settings.getPremium.GetPremiumScreen
 import com.awais.jsonlauncher.ui.screens.settings.homeApps.HomeApps
 import com.awais.jsonlauncher.ui.theme.JsonSpacing
 import com.awais.jsonlauncher.ui.theme.JsonSyntax
@@ -51,6 +52,9 @@ fun LauncherSettings(
                     Text("{", color = JsonSyntax.colors.parenthesis)
                 }
 
+            }
+            item{
+                GetPremiumScreen(navController = navController)
             }
             item {
                 DefaultLauncherSection()

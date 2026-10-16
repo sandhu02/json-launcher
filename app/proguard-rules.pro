@@ -19,3 +19,7 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Suppress missing class warnings for deprecated/removed BillingClient APIs referenced by dependencies
+-dontwarn com.android.billingclient.api.QueryPurchaseHistoryParams$Builder
+-dontwarn com.android.billingclient.api.QueryPurchaseHistoryParams

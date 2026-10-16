@@ -1,6 +1,14 @@
+import java.util.Properties
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import com.android.build.api.dsl.ApplicationExtension
 
+// Load local.properties if present
+val localProperties = Properties().apply {
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        localPropertiesFile.inputStream().use { load(it) }
+    }
+}
 
 plugins {
     alias(libs.plugins.android.application)
@@ -21,10 +29,21 @@ configure<ApplicationExtension> {
         applicationId = "com.awais.jsonlauncher"
         minSdk = 24
         targetSdk = 36
-        versionCode = 13
-        versionName = "1.6.3"
+        versionCode = 14
+        versionName = "2.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // RevenueCat API key (reads from local.properties first, then gradle.properties)
+        val revenueCatApiKey = localProperties.getProperty("REVENUECAT_API_KEY")
+            ?: project.findProperty("REVENUECAT_API_KEY")?.toString()
+            ?: ""
+
+        buildConfigField(
+            "String",
+            "REVENUECAT_API_KEY",
+            "\"$revenueCatApiKey\""
+        )
     }
 
     buildTypes {
@@ -51,6 +70,7 @@ configure<ApplicationExtension> {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -91,6 +111,7 @@ dependencies {
     //Datastore
     implementation("androidx.datastore:datastore-preferences:1.1.7")
 
-    //Billing
-    implementation("com.android.billingclient:billing-ktx:9.1.0")
+    //Revenue Cat
+    implementation("com.revenuecat.purchases:purchases:8.17.1")
+    implementation("com.revenuecat.purchases:purchases-ui:8.17.1")
 }

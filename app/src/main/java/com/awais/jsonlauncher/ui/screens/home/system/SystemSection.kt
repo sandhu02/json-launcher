@@ -6,7 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.awais.jsonlauncher.models.JsonProperty
-import com.awais.jsonlauncher.navigation.JsonLauncherAppScreens
+import com.awais.jsonlauncher.ui.navigation.JsonLauncherAppScreens
 import com.awais.jsonlauncher.ui.components.jsonObject.JsonItem
 
 

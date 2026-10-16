@@ -1,4 +1,4 @@
-package com.awais.jsonlauncher.navigation
+package com.awais.jsonlauncher.ui.navigation
 
 import android.content.Intent
 import android.os.Build
@@ -25,12 +25,14 @@ import com.awais.jsonlauncher.ui.dialogs.NotificationAccessDialog
 import com.awais.jsonlauncher.ui.dialogs.SetAsDefaultDialog
 import com.awais.jsonlauncher.ui.screens.appDrawer.AppDrawerScreen
 import com.awais.jsonlauncher.ui.screens.home.HomeScreen
+import com.awais.jsonlauncher.ui.screens.premiumScreen.PremiumScreen
 import com.awais.jsonlauncher.ui.screens.settings.LauncherSettings
 import kotlin.math.absoluteValue
 
 enum class JsonLauncherAppScreens(val title : String) {
     MainScreen(title = "MainScreen"),
     SettingsScreen(title = "SettingsScreen"),
+    PremiumScreen(title = "PremiumScreen")
 }
 
 
@@ -151,6 +153,15 @@ fun JsonLauncherNavHost(
                 LauncherSettings(
                     modifier = modifier,
                     navController = navController
+                )
+            }
+
+            composable(route = JsonLauncherAppScreens.PremiumScreen.name) {
+                PremiumScreen(
+                    modifier = modifier,
+                    onDismiss = {
+                        navController.popBackStack()
+                    }
                 )
             }
         }

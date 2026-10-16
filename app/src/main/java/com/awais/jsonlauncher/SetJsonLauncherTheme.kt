@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.awais.jsonlauncher.models.BackgroundMode
 import com.awais.jsonlauncher.models.ThemeMode
-import com.awais.jsonlauncher.navigation.JsonLauncherNavHost
+import com.awais.jsonlauncher.ui.navigation.JsonLauncherNavHost
 import com.awais.jsonlauncher.repositories.SettingsRepository
 import com.awais.jsonlauncher.ui.theme.JsonLauncherTheme
 

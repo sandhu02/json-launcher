@@ -30,7 +30,6 @@ fun SetAsDefaultDialog(
         onDismissRequest = onDismiss
     ) {
         Surface(
-//            shape = RoundedCornerShape(20.dp),
             tonalElevation = 8.dp,
             modifier = Modifier.fillMaxWidth()
         ) {

@@ -129,26 +129,6 @@ fun JsonLauncherNavHost(
 
             composable(
                 route = JsonLauncherAppScreens.SettingsScreen.name,
-                enterTransition = {
-                    slideIntoContainer(
-                        AnimatedContentTransitionScope.SlideDirection.Left
-                    )
-                },
-                exitTransition = {
-                    slideOutOfContainer(
-                        AnimatedContentTransitionScope.SlideDirection.Right
-                    )
-                },
-                popEnterTransition = {
-                    slideIntoContainer(
-                        AnimatedContentTransitionScope.SlideDirection.Left
-                    )
-                },
-                popExitTransition = {
-                    slideOutOfContainer(
-                        AnimatedContentTransitionScope.SlideDirection.Right
-                    )
-                }
             ) {
                 LauncherSettings(
                     modifier = modifier,
@@ -156,7 +136,9 @@ fun JsonLauncherNavHost(
                 )
             }
 
-            composable(route = JsonLauncherAppScreens.PremiumScreen.name) {
+            composable(
+                route = JsonLauncherAppScreens.PremiumScreen.name,
+            ) {
                 PremiumScreen(
                     modifier = modifier,
                     onDismiss = {

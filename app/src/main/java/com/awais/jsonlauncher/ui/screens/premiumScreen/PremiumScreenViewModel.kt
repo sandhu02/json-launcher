@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeout
 import javax.inject.Inject
-import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.seconds
 
 data class PremiumScreenUiState(
     val isPremium: Boolean = false,
@@ -37,7 +37,7 @@ class PremiumScreenViewModel @Inject constructor(
         _uiState.update { it.copy(isLoading = true, errorMessage = null) }
         viewModelScope.launch {
             try {
-                withTimeout(10000L.milliseconds) {
+                withTimeout(20.seconds) {
                     Log.d(TAG, "Checking premium status...")
                     val isPremium = billingRepository.isPremium()
                     if (isPremium) {
